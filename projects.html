@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Envira</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background: linear-gradient(135deg, #1a3a2e 0%, #2d5a45 50%, #4a7c59 100%); background-size: 200% 200%; animation: gradientShift 20s ease infinite; min-height: 100vh; }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .navbar { width: 100%; background: rgba(26, 58, 46, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 18px 0; position: fixed; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .nav-container { width: 88%; max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-left { display: flex; align-items: center; gap: 16px; }
+        .nav-logo { height: 65px; }
+        .brand-name { font-size: 28px; font-weight: 800; color: white; }
+        .nav-links { list-style: none; display: flex; gap: 40px; }
+        .nav-links a { color: rgba(255, 255, 255, 0.9); text-decoration: none; font-weight: 600; font-size: 16px; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #7fba8f; transition: width 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .cta-btn { background: linear-gradient(135deg, #4a7c59 0%, #2d5a45 100%); padding: 12px 28px; border-radius: 8px; text-decoration: none; color: white; font-weight: 700; font-size: 15px; }
+        .hero { padding: 180px 20px 80px; text-align: center; }
+        .hero h1 { font-size: 64px; font-weight: 800; color: white; margin-bottom: 24px; letter-spacing: -1.5px; }
+        .hero p { font-size: 22px; color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto; line-height: 1.7; }
+        .projects { max-width: 1300px; margin: 0 auto; padding: 80px 20px; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 40px; }
+        .project-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 42px 38px; transition: all 0.4s; position: relative; }
+        .project-card:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(127, 186, 143, 0.5); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .project-tag { display: inline-block; background: rgba(127, 186, 143, 0.2); color: #7fba8f; padding: 7px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; border: 1px solid rgba(127, 186, 143, 0.3); }
+        .project-card h3 { font-size: 24px; font-weight: 800; color: white; margin-bottom: 14px; }
+        .project-card p { color: rgba(255, 255, 255, 0.85); font-size: 17px; line-height: 1.7; }
+        .coming-badge { position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #4a7c59, #2d5a45); color: white; padding: 6px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .footer { background: rgba(26, 58, 46, 0.95); color: white; padding: 80px 20px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+        .footer-brand { font-size: 32px; font-weight: 800; margin-bottom: 16px; }
+        .footer-tagline { font-size: 16px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; margin-bottom: 24px; }
+        .footer-section h4 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #7fba8f; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: 0.2s; font-size: 15px; }
+        .footer-links a:hover { color: white; padding-left: 5px; }
+        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 30px; text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 14px; }
+        @media (max-width: 768px) { .footer-main { grid-template-columns: 1fr; gap: 40px; } .project-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <img src="logo.png" class="nav-logo" alt="Envira">
+                <span class="brand-name">Envira</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <li><a href="join.html">Join Us</a></li>
+            </ul>
+            <a class="cta-btn" href="join.html">Become an Ambassador</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Our Projects</h1>
+        <p>From carbon market analytics to policy frameworks, our projects address critical gaps in climate finance and environmental governance.</p>
+    </section>
+
+    <div class="projects">
+        <div class="project-grid">
+            <div class="project-card">
+                <span class="project-tag">Platform</span>
+                <h3>Carbon Arbitrage App</h3>
+                <p>Global carbon price analytics platform identifying arbitrage opportunities and market inefficiencies across international carbon markets.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Framework</span>
+                <h3>Decarbonization Policy</h3>
+                <p>Trade-off optimization framework for governments balancing economic growth, social equity, and emissions reduction in resource-constrained environments.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Dashboard</span>
+                <h3>Landfill Emissions</h3>
+                <p>Interactive GHRP methane emissions dashboard providing real-time data visualization for waste management policy and climate action planning.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Policy Paper</span>
+                <h3>Climate Finance Reimagined</h3>
+                <p>Novel financing framework restructuring how international climate funds flow to LMICs, emphasizing adaptation capacity and local ownership.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Research</span>
+                <h3>Climate Tech U.S. Networks</h3>
+                <p>Study with NetZero Lab TU Munich mapping innovation clusters and technology transfer pathways for emerging market adoption.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="coming-badge">Coming Soon</span>
+                <span class="project-tag">Partnership</span>
+                <h3>UN Climate Initiative</h3>
+                <p>Major collaboration with UN development agencies to pilot Envira frameworks in Sub-Saharan African nations.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Framework</span>
+                <h3>Sustainable Budget Strategy</h3>
+                <p>A data-driven fiscal framework enabling smarter long-term planning by quantifying trade-offs across tax policy, fund balance use, and major infrastructure or green-investment decisions.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Dashboard</span>
+                <h3>Municipal Scenario Simulator</h3>
+                <p>Dynamic visualization system modeling 5–20 year impacts of Town Hall relocation, pool upgrades, tax-levy changes, and energy-efficiency initiatives to guide Board decision-making.</p>
+            </div>
+
+            <div class="project-card">
+                <span class="project-tag">Policy Analysis</span>
+                <h3>Future-Ready North Castle</h3>
+                <p>Strategic roadmap aligning municipal finance with environmental resilience, revealing how sustainable investments—solar, EV fleets, building upgrades—strengthen long-term fiscal health.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div>
+                    <div class="footer-brand">Envira</div>
+                    <p class="footer-tagline">
+                        Driving Global Sustainability, One Solution at a Time.<br>
+                        Building climate finance frameworks for a resilient future.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigate</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="join.html">Join Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@envira.org">contact@envira.org</a></li>
+                        <li><a href="mailto:partnerships@envira.org">partnerships@envira.org</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Envira. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
