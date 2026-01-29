@@ -3,50 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Envira - Driving Global Sustainability, One Solution at a Time">
     <title>Envira | Climate Finance Innovation</title>
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Manrope', sans-serif;
-            color: #0a2540;
+            background: #ffffff;
+            color: #1f2937;
             line-height: 1.6;
-            background: linear-gradient(135deg, #1a3a2e 0%, #2d5a45 50%, #4a7c59 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 20s ease infinite;
             overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         /* NAVBAR */
         .navbar {
             width: 100%;
-            background: rgba(26, 58, 46, 0.95);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 18px 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
             position: fixed;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled {
+            padding: 14px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .nav-container {
-            width: 88%;
-            max-width: 1200px;
+            width: 90%;
+            max-width: 1280px;
             margin: auto;
             display: flex;
             justify-content: space-between;
@@ -60,14 +51,19 @@
         }
 
         .nav-logo {
-            height: 65px;
+            height: 55px;
+            transition: height 0.3s;
+        }
+
+        .navbar.scrolled .nav-logo {
+            height: 45px;
         }
 
         .brand-name {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
-            color: white;
-            letter-spacing: -0.8px;
+            color: #1f2937;
+            letter-spacing: -0.5px;
         }
 
         .nav-links {
@@ -77,375 +73,390 @@
         }
 
         .nav-links a {
-            color: rgba(255, 255, 255, 0.9);
+            color: #6b7280;
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #7fba8f;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
+            font-size: 15px;
+            transition: color 0.2s;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: white;
+            color: #10b981;
         }
 
         .cta-btn {
-            background: linear-gradient(135deg, #4a7c59 0%, #2d5a45 100%);
-            padding: 12px 28px;
+            background: #10b981;
+            padding: 11px 24px;
             border-radius: 8px;
             text-decoration: none;
             color: white;
             font-weight: 700;
-            font-size: 15px;
-            box-shadow: 0 4px 15px rgba(74, 124, 89, 0.3);
-            transition: all 0.3s;
+            font-size: 14px;
+            transition: all 0.2s;
         }
 
         .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 124, 89, 0.5);
+            background: #059669;
+            transform: translateY(-1px);
         }
 
-        /* CINEMATIC ZOOM ANIMATION SECTION */
-        .zoom-container {
+        /* HERO */
+        .hero {
+            padding: 180px 20px 120px;
+            text-align: center;
+            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
             position: relative;
-            min-height: 100vh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 80px;
         }
 
-        .zoom-stage {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 2s ease-in-out;
-        }
-
-        .zoom-stage.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .zoom-stage.zoom-out {
-            opacity: 0;
-            transform: scale(1.5);
-        }
-
-        /* Stage 1: World View */
-        .stage-world {
-            background: 
-                radial-gradient(circle at 30% 40%, rgba(255, 107, 107, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 70% 60%, rgba(255, 165, 0, 0.15) 0%, transparent 40%),
-                linear-gradient(135deg, #1a3a2e 0%, #2d5a45 100%);
-        }
-
-        .world-map-svg {
-            width: 80%;
-            height: 80%;
-            opacity: 0.3;
-            filter: drop-shadow(0 0 30px rgba(255, 107, 107, 0.3));
-        }
-
-        /* Stage 2: Rural India Zoom */
-        .stage-region {
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(255, 69, 0, 0.2) 0%, transparent 60%),
-                linear-gradient(135deg, #2d1810 0%, #4a2d1a 100%);
-        }
-
-        .region-overlay {
-            position: relative;
-            width: 70%;
-            height: 70%;
-            border: 3px solid rgba(255, 165, 0, 0.4);
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .heat-indicator {
-            font-size: 72px;
-            color: #ff6b6b;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
-        }
-
-        /* Stage 3: Farm View */
-        .stage-farm {
-            background: 
-                radial-gradient(circle at 60% 40%, rgba(255, 69, 0, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, #1a2a1a 0%, #2d3a2d 100%);
-        }
-
-        .farm-container {
-            position: relative;
-            width: 80%;
-            height: 80%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .farm-house {
-            width: 300px;
-            height: 200px;
-            background: linear-gradient(135deg, #3a2a1a 0%, #5a4a3a 100%);
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .farm-house::before {
+        .hero::before {
             content: '';
             position: absolute;
-            top: -80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 180px solid transparent;
-            border-right: 180px solid transparent;
-            border-bottom: 100px solid #5a4a3a;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
         }
 
-        .data-overlay {
-            position: absolute;
-            top: 50%;
-            left: 110%;
-            transform: translateY(-50%);
-            width: 350px;
-            background: rgba(74, 124, 89, 0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(127, 186, 143, 0.5);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
         }
 
-        .data-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 10px;
-        }
-
-        .data-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.95);
-        }
-
-        .data-value {
-            font-weight: 700;
-            color: #7fba8f;
-        }
-
-        .insight-badge {
-            background: rgba(127, 186, 143, 0.2);
-            border: 1px solid rgba(127, 186, 143, 0.4);
-            color: #7fba8f;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        /* Overlay Text */
-        .stage-text {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            width: 90%;
+        .hero-content {
+            position: relative;
+            z-index: 1;
             max-width: 900px;
-            z-index: 10;
+            margin: 0 auto;
         }
 
-        .stage-text h2 {
-            font-size: 52px;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            line-height: 1.2;
-        }
-
-        .stage-text p {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.7;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .stage-text .highlight {
-            color: #7fba8f;
+        .hero-tag {
+            display: inline-block;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 8px 20px;
+            border-radius: 30px;
             font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        /* Navigation Dots */
-        .zoom-nav {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+        }
+
+        .hero .tagline {
+            font-size: 28px;
+            color: #10b981;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
             display: flex;
-            gap: 15px;
-            z-index: 20;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
         }
 
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
+        .btn-primary {
+            background: #10b981;
+            color: white;
+            padding: 16px 36px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #1f2937;
+            padding: 15px 34px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
             transition: all 0.3s;
         }
 
-        .nav-dot.active {
-            background: #7fba8f;
-            transform: scale(1.3);
+        .btn-secondary:hover {
+            border-color: #10b981;
+            color: #10b981;
+            transform: translateY(-2px);
         }
 
-        /* Mission Section */
-        .mission-section {
-            padding: 140px 20px;
-            position: relative;
-            z-index: 1;
+        /* STATS SECTION */
+        .stats-section {
+            padding: 100px 20px;
+            background: white;
         }
 
-        .mission-content {
-            max-width: 1300px;
+        .stats-container {
+            max-width: 1280px;
             margin: 0 auto;
             text-align: center;
         }
 
-        .mission-title {
-            font-size: 58px;
+        .stats-title {
+            font-size: 48px;
             font-weight: 800;
-            color: white;
-            margin-bottom: 60px;
-            letter-spacing: -1.2px;
+            color: #1f2937;
+            margin-bottom: 80px;
+            letter-spacing: -1px;
         }
 
-        .mission-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
         }
 
-        .mission-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 45px 40px;
-            transition: all 0.4s;
-        }
-
-        .mission-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(127, 186, 143, 0.5);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .mission-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 24px;
-            background: linear-gradient(135deg, #4a7c59 0%, #2d5a45 100%);
+        .stat-card {
+            padding: 40px 30px;
+            background: #f9fafb;
             border-radius: 16px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card:hover {
+            background: #f0fdf4;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .icon-shape {
-            width: 35px;
-            height: 35px;
+        .icon-circle {
+            width: 28px;
+            height: 28px;
             background: white;
-            opacity: 0.9;
-        }
-
-        .icon-globe {
             border-radius: 50%;
         }
 
-        .icon-chart {
-            clip-path: polygon(0% 100%, 25% 60%, 50% 80%, 75% 40%, 100% 50%, 100% 100%);
-        }
-
-        .icon-network {
+        .icon-hexagon {
+            width: 28px;
+            height: 28px;
+            background: white;
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         }
 
-        .icon-data {
-            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 100%, 25% 100%, 0% 75%);
+        .icon-diamond {
+            width: 24px;
+            height: 24px;
+            background: white;
+            transform: rotate(45deg);
         }
 
-        .mission-card h3 {
+        .icon-triangle {
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-bottom: 24px solid white;
+        }
+
+        .stat-card h3 {
             font-size: 24px;
             font-weight: 800;
-            color: white;
-            margin-bottom: 14px;
+            color: #1f2937;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
-        .mission-card p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 16px;
+        .stat-card p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* IMPACT SECTION */
+        .impact-section {
+            padding: 120px 20px;
+            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+        }
+
+        .impact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-label {
+            display: inline-block;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto;
             line-height: 1.7;
+        }
+
+        .impact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .impact-text h3 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 24px;
+            letter-spacing: -0.8px;
+        }
+
+        .impact-text p {
+            font-size: 18px;
+            color: #6b7280;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .impact-visual {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .data-point {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-point:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .data-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            border-radius: 4px;
+            animation: progressGrow 2s ease-out forwards;
+        }
+
+        @keyframes progressGrow {
+            from { width: 0; }
         }
 
         /* FOOTER */
         .footer {
-            background: rgba(26, 58, 46, 0.95);
-            color: white;
+            background: #f9fafb;
             padding: 80px 20px 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid #e5e7eb;
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
@@ -457,25 +468,26 @@
         }
 
         .footer-brand {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
+            color: #1f2937;
             margin-bottom: 16px;
         }
 
         .footer-tagline {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            color: #6b7280;
             line-height: 1.6;
             margin-bottom: 24px;
         }
 
         .footer-section h4 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #7fba8f;
+            color: #1f2937;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .footer-links {
@@ -487,64 +499,38 @@
         }
 
         .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
+            color: #6b7280;
             text-decoration: none;
             transition: 0.2s;
             font-size: 15px;
         }
 
         .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
+            color: #10b981;
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid #e5e7eb;
             padding-top: 30px;
             text-align: center;
-            color: rgba(255, 255, 255, 0.6);
+            color: #9ca3af;
             font-size: 14px;
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .nav-logo {
-                height: 50px;
-            }
-
-            .stage-text h2 {
-                font-size: 32px;
-            }
-
-            .stage-text p {
-                font-size: 16px;
-            }
-
-            .data-overlay {
-                position: relative;
-                left: 0;
-                top: 30px;
-                width: 90%;
-            }
-
-            .mission-title {
-                font-size: 38px;
-            }
-
-            .footer-main {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
+            .hero h1 { font-size: 40px; }
+            .hero .tagline { font-size: 22px; }
+            .section-title { font-size: 36px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .impact-content { grid-template-columns: 1fr; }
+            .footer-main { grid-template-columns: 1fr; gap: 40px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-left">
                 <img src="logo.png" class="nav-logo" alt="Envira">
@@ -560,121 +546,113 @@
         </div>
     </nav>
 
-    <!-- CINEMATIC ZOOM ANIMATION -->
-    <section class="zoom-container">
-        <!-- Stage 1: World View -->
-        <div class="zoom-stage stage-world active" id="stage1">
-            <svg class="world-map-svg" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
-                <path fill="#4a7c59" opacity="0.6" d="M150,100 L250,130 L240,180 L180,170 L150,140 Z"/>
-                <path fill="#4a7c59" opacity="0.7" d="M300,90 L400,120 L390,170 L320,150 Z"/>
-                <path fill="#ff6b6b" opacity="0.8" d="M500,160 L650,200 L630,270 L520,240 Z"/>
-                <path fill="#4a7c59" opacity="0.6" d="M700,130 L850,170 L840,230 L720,200 Z"/>
-                <path fill="#4a7c59" opacity="0.5" d="M900,110 L1020,150 L1000,210 L920,180 Z"/>
-                <path fill="#ffa500" opacity="0.7" d="M250,320 L370,360 L350,430 L270,400 Z"/>
-                <path fill="#ff6b6b" opacity="0.9" d="M450,300 L590,350 L570,430 L470,390 Z"/>
-                <path fill="#ffa500" opacity="0.7" d="M650,320 L780,370 L760,450 L670,410 Z"/>
-                <path fill="#4a7c59" opacity="0.6" d="M850,300 L960,350 L940,420 L870,380 Z"/>
-            </svg>
-            <div class="stage-text">
-                <h2>Climate Crisis Affecting 3.5 Billion People</h2>
-                <p>Low-medium income countries face <span class="highlight">disproportionate climate impacts</span> with the least resources to adapt.</p>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">Climate Finance Innovation</div>
+            <p class="tagline">Driving Global Sustainability, One Solution at a Time</p>
+            <h1>Building Frameworks for a Resilient Future</h1>
+            <p>
+                Envira equips governments, institutions, and communities with innovative tools 
+                to confront climate challenges and build a resilient future.
+            </p>
+            <div class="hero-buttons">
+                <a href="projects.html" class="btn-primary">Explore Our Work</a>
+                <a href="about.html" class="btn-secondary">Learn More</a>
             </div>
-        </div>
-
-        <!-- Stage 2: Rural India -->
-        <div class="zoom-stage stage-region" id="stage2">
-            <div class="region-overlay">
-                <div class="heat-indicator">48°C</div>
-                <h2 style="color: white; font-size: 36px; margin-bottom: 15px;">Rural India</h2>
-                <p style="color: rgba(255,255,255,0.9); font-size: 18px; text-align: center;">Extreme heat waves, unpredictable monsoons, crop failures devastating farming communities.</p>
-            </div>
-            <div class="stage-text">
-                <h2>Zooming Into the Crisis</h2>
-                <p>Traditional solutions are <span class="highlight">too slow, too expensive, inaccessible</span> to those who need them most.</p>
-            </div>
-        </div>
-
-        <!-- Stage 3: Farm with Data -->
-        <div class="zoom-stage stage-farm" id="stage3">
-            <div class="farm-container">
-                <div class="farm-house"></div>
-                <div class="data-overlay">
-                    <div class="data-title">Envira Framework Active</div>
-                    <div class="data-item">
-                        <span>Water Usage</span>
-                        <span class="data-value">-34%</span>
-                    </div>
-                    <div class="data-item">
-                        <span>Crop Yield</span>
-                        <span class="data-value">+28%</span>
-                    </div>
-                    <div class="data-item">
-                        <span>Cost Savings</span>
-                        <span class="data-value">$2,400/yr</span>
-                    </div>
-                    <div class="data-item">
-                        <span>Heat Resilience</span>
-                        <span class="data-value">+52%</span>
-                    </div>
-                    <div class="insight-badge">Sustainable Irrigation Model Active</div>
-                </div>
-            </div>
-            <div class="stage-text">
-                <h2>Data-Driven Solutions That Work</h2>
-                <p>Envira frameworks deliver <span class="highlight">actionable insights</span> that transform how communities adapt to climate change.</p>
-            </div>
-        </div>
-
-        <!-- Navigation Dots -->
-        <div class="zoom-nav">
-            <div class="nav-dot active" data-stage="1"></div>
-            <div class="nav-dot" data-stage="2"></div>
-            <div class="nav-dot" data-stage="3"></div>
         </div>
     </section>
 
-    <!-- MISSION SECTION -->
-    <section class="mission-section">
-        <div class="mission-content">
-            <h2 class="mission-title">How We Build Solutions</h2>
-            
-            <div class="mission-grid">
-                <div class="mission-card">
-                    <div class="mission-icon">
-                        <div class="icon-shape icon-globe"></div>
+    <section class="stats-section">
+        <div class="stats-container">
+            <h2 class="stats-title">What We Do</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <div class="icon-circle"></div>
                     </div>
                     <h3>LMIC Focus</h3>
-                    <p>Frameworks designed specifically for low-medium income countries facing disproportionate climate impacts.</p>
+                    <p>Frameworks designed for low-medium income countries facing disproportionate climate impacts.</p>
                 </div>
 
-                <div class="mission-card">
-                    <div class="mission-icon">
-                        <div class="icon-shape icon-chart"></div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <div class="icon-hexagon"></div>
                     </div>
                     <h3>Research-Driven</h3>
-                    <p>Evidence-based solutions grounded in environmental economics, climate science, and development theory.</p>
+                    <p>Evidence-based solutions grounded in environmental economics and climate science.</p>
                 </div>
 
-                <div class="mission-card">
-                    <div class="mission-icon">
-                        <div class="icon-shape icon-network"></div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <div class="icon-diamond"></div>
                     </div>
                     <h3>Collaborative</h3>
-                    <p>Partnering with universities, governments, and NGOs to test and scale our frameworks globally.</p>
+                    <p>Partnering with universities, governments, and NGOs to test and scale frameworks.</p>
                 </div>
 
-                <div class="mission-card">
-                    <div class="mission-icon">
-                        <div class="icon-shape icon-data"></div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <div class="icon-triangle"></div>
                     </div>
                     <h3>Data Transparency</h3>
-                    <p>Building platforms that make complex climate and financial data accessible and actionable.</p>
+                    <p>Building platforms that make complex climate data accessible and actionable.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <section class="impact-section">
+        <div class="impact-container">
+            <div class="section-header">
+                <span class="section-label">Our Approach</span>
+                <h2 class="section-title">Translating Research Into Action</h2>
+                <p class="section-subtitle">
+                    We create frameworks that bridge the gap between climate science and real-world implementation.
+                </p>
+            </div>
+
+            <div class="impact-content">
+                <div class="impact-text">
+                    <h3>Data-Driven Decision Making</h3>
+                    <p>
+                        Our analytical tools transform complex climate and financial data into clear, 
+                        actionable insights for policymakers and institutions.
+                    </p>
+                    <p>
+                        From carbon market analytics to municipal budget planning, we build systems 
+                        that enable smarter, evidence-based climate action.
+                    </p>
+                </div>
+
+                <div class="impact-visual">
+                    <div class="data-point">
+                        <span class="data-label">Policy Frameworks</span>
+                        <span class="data-value">6</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                    </div>
+
+                    <div class="data-point">
+                        <span class="data-label">Active Research</span>
+                        <span class="data-value">9</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%;"></div>
+                    </div>
+
+                    <div class="data-point">
+                        <span class="data-label">Collaborations</span>
+                        <span class="data-value">3</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-main">
@@ -685,7 +663,6 @@
                         Building climate finance frameworks for a resilient future.
                     </p>
                 </div>
-
                 <div class="footer-section">
                     <h4>Navigate</h4>
                     <ul class="footer-links">
@@ -695,7 +672,6 @@
                         <li><a href="join.html">Join Us</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4>Contact</h4>
                     <ul class="footer-links">
@@ -703,7 +679,6 @@
                         <li><a href="mailto:partnerships@envira.org">partnerships@envira.org</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
                     <h4>Connect</h4>
                     <ul class="footer-links">
@@ -713,7 +688,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; 2025 Envira. All rights reserved.</p>
             </div>
@@ -721,47 +695,33 @@
     </footer>
 
     <script>
-        // Cinematic zoom animation
-        let currentStage = 1;
-        const totalStages = 3;
-        
-        function showStage(stageNum) {
-            // Hide all stages
-            document.querySelectorAll('.zoom-stage').forEach(stage => {
-                stage.classList.remove('active');
-                stage.classList.add('zoom-out');
-            });
-            
-            // Show current stage
-            const activeStage = document.getElementById(`stage${stageNum}`);
-            setTimeout(() => {
-                activeStage.classList.remove('zoom-out');
-                activeStage.classList.add('active');
-            }, 100);
-            
-            // Update dots
-            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
-                if (index + 1 === stageNum) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
+        // Navbar scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-            
-            currentStage = stageNum;
-        }
+        }, observerOptions);
 
-        // Auto-advance through stages
-        setInterval(() => {
-            currentStage = currentStage >= totalStages ? 1 : currentStage + 1;
-            showStage(currentStage);
-        }, 6000);
-
-        // Manual navigation
-        document.querySelectorAll('.nav-dot').forEach(dot => {
-            dot.addEventListener('click', function() {
-                const stage = parseInt(this.dataset.stage);
-                showStage(stage);
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.stat-card, .section-header').forEach(el => {
+                observer.observe(el);
             });
         });
     </script>
