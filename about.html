@@ -9,7 +9,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Manrope', sans-serif; background: #ffffff; color: #1f2937; line-height: 1.6; overflow-x: hidden; }
         
-        /* NAVBAR (same as index) */
+        /* NAVBAR */
         .navbar { width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; padding: 20px 0; position: fixed; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .nav-container { width: 90%; max-width: 1280px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
         .nav-left { display: flex; align-items: center; gap: 16px; }
@@ -22,24 +22,87 @@
         .cta-btn:hover { background: #059669; transform: translateY(-1px); }
 
         /* HERO */
-        .hero { padding: 160px 20px 100px; text-align: center; background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
-        .hero h1 { font-size: 56px; font-weight: 800; color: #1f2937; margin-bottom: 24px; letter-spacing: -1px; }
-        .hero p { font-size: 20px; color: #6b7280; max-width: 700px; margin: 0 auto; line-height: 1.7; }
+        .hero { padding: 160px 20px 100px; text-align: center; background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); position: relative; overflow: hidden; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            animation: float1 15s ease-in-out infinite;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -20%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            animation: float2 20s ease-in-out infinite;
+        }
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -50px) scale(1.1); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 30px) scale(1.15); }
+        }
+        .hero h1 { font-size: 56px; font-weight: 800; color: #1f2937; margin-bottom: 24px; letter-spacing: -1px; position: relative; z-index: 1; }
+        .hero p { font-size: 20px; color: #6b7280; max-width: 700px; margin: 0 auto; line-height: 1.7; position: relative; z-index: 1; }
 
-        /* CONTENT SECTIONS */
-        .section { padding: 100px 20px; }
-        .section-light { background: #f9fafb; }
-        .section-container { max-width: 1000px; margin: 0 auto; }
-        .section h2 { font-size: 42px; font-weight: 800; color: #1f2937; margin-bottom: 28px; letter-spacing: -0.8px; }
-        .section p { font-size: 18px; color: #6b7280; line-height: 1.8; margin-bottom: 20px; }
+        /* MISSION STATEMENT - VISCERAL */
+        .mission-visceral { padding: 120px 20px; background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 50%, #fef2f2 100%); position: relative; overflow: hidden; }
+        .mission-container { max-width: 1200px; margin: 0 auto; }
+        .mission-header { text-align: center; margin-bottom: 80px; }
+        .mission-label { display: inline-block; background: #fecaca; color: #991b1b; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 13px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mission-title { font-size: 52px; font-weight: 800; color: #1f2937; margin-bottom: 30px; letter-spacing: -1px; }
+        .mission-subtitle { font-size: 24px; color: #dc2626; font-weight: 700; margin-bottom: 20px; }
 
-        /* APPROACH CARDS */
-        .approach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
-        .approach-card { background: white; border: 1px solid #e5e7eb; border-radius: 16px; padding: 40px; transition: all 0.3s; }
-        .approach-card:hover { border-color: #10b981; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1); transform: translateY(-5px); }
-        .approach-number { display: inline-flex; width: 50px; height: 50px; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 24px; font-weight: 800; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .approach-card h3 { font-size: 24px; font-weight: 800; color: #1f2937; margin-bottom: 14px; }
-        .approach-card p { font-size: 16px; color: #6b7280; line-height: 1.7; }
+        .crisis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 60px; }
+        .crisis-card { background: white; border-left: 4px solid #dc2626; border-radius: 12px; padding: 40px; box-shadow: 0 10px 30px rgba(220, 38, 38, 0.1); opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .crisis-card.visible { opacity: 1; transform: translateY(0); }
+        .crisis-location { font-size: 14px; font-weight: 700; color: #dc2626; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .crisis-card h3 { font-size: 26px; font-weight: 800; color: #1f2937; margin-bottom: 16px; line-height: 1.2; }
+        .crisis-stat { font-size: 48px; font-weight: 800; color: #dc2626; margin-bottom: 12px; line-height: 1; }
+        .crisis-card p { color: #6b7280; font-size: 17px; line-height: 1.7; }
+
+        .solution-box { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 20px; padding: 60px 50px; text-align: center; margin-top: 60px; }
+        .solution-box h3 { font-size: 36px; font-weight: 800; color: #065f46; margin-bottom: 24px; }
+        .solution-box p { font-size: 20px; color: #047857; line-height: 1.8; max-width: 900px; margin: 0 auto; }
+
+        /* APPROACH */
+        .approach-section { padding: 100px 20px; background: white; }
+        .approach-container { max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 48px; font-weight: 800; color: #1f2937; text-align: center; margin-bottom: 70px; letter-spacing: -1px; }
+        .approach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 40px; }
+        .approach-card { background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 16px; padding: 50px 40px; transition: all 0.4s; position: relative; overflow: hidden; }
+        .approach-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .approach-card:hover::before { opacity: 1; }
+        .approach-card:hover { border-color: #10b981; box-shadow: 0 15px 40px rgba(16, 185, 129, 0.15); transform: translateY(-8px); }
+        .approach-number { display: inline-flex; width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 28px; font-weight: 800; align-items: center; justify-content: center; margin-bottom: 24px; position: relative; z-index: 1; }
+        .approach-card h3 { font-size: 26px; font-weight: 800; color: #1f2937; margin-bottom: 16px; position: relative; z-index: 1; }
+        .approach-card p { font-size: 17px; color: #6b7280; line-height: 1.8; position: relative; z-index: 1; }
+
+        /* CTA SECTION */
+        .cta-section { padding: 100px 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-align: center; }
+        .cta-title { font-size: 48px; font-weight: 800; margin-bottom: 24px; }
+        .cta-text { font-size: 22px; margin-bottom: 40px; opacity: 0.95; }
+        .cta-button { background: white; color: #10b981; padding: 18px 40px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 18px; display: inline-block; transition: all 0.3s; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
 
         /* FOOTER */
         .footer { background: #f9fafb; padding: 80px 20px 40px; border-top: 1px solid #e5e7eb; }
@@ -56,7 +119,8 @@
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 38px; }
-            .section h2 { font-size: 32px; }
+            .mission-title { font-size: 36px; }
+            .crisis-grid { grid-template-columns: 1fr; }
             .approach-grid { grid-template-columns: 1fr; }
             .footer-main { grid-template-columns: 1fr; gap: 40px; }
             .nav-links { display: none; }
@@ -81,47 +145,75 @@
     </nav>
 
     <section class="hero">
-        <h1>About Envira</h1>
-        <p>Building the next generation of climate finance frameworks for a resilient, sustainable future.</p>
+        <h1>The Climate Crisis is Here</h1>
+        <p>And the people who contributed least are suffering most.</p>
     </section>
 
-    <section class="section">
-        <div class="section-container">
-            <h2>Our Mission</h2>
-            <p>Envira is a climate finance research and policy initiative focused on building innovative frameworks, analytical tools, and policy infrastructure that translate climate research into actionable solutions. We work at the intersection of environmental policy, economics, and global development—designing systems that sit where theory meets implementation.</p>
-            <p>Our work specifically targets low-medium income countries, regions that face disproportionate climate impacts despite contributing least to global emissions. These nations need accessible, scalable solutions that traditional climate finance mechanisms have failed to provide.</p>
+    <section class="mission-visceral">
+        <div class="mission-container">
+            <div class="mission-header">
+                <div class="mission-label">The Reality</div>
+                <h2 class="mission-title">This is Happening Right Now</h2>
+                <p class="mission-subtitle">While traditional solutions remain out of reach</p>
+            </div>
+
+            <div class="crisis-grid">
+                <div class="crisis-card">
+                    <div class="crisis-location">Rural India</div>
+                    <h3>Farmers watching crops die in 48°C heat</h3>
+                    <div class="crisis-stat">+2.5°C</div>
+                    <p>Temperature increase since pre-industrial levels. Traditional irrigation systems fail. Families lose entire harvests. No access to climate adaptation tools that could save their livelihoods.</p>
+                </div>
+
+                <div class="crisis-card">
+                    <div class="crisis-location">Sub-Saharan Africa</div>
+                    <h3>Communities facing water scarcity</h3>
+                    <div class="crisis-stat">400M</div>
+                    <p>People without reliable access to clean water. Climate change intensifies droughts. Existing infrastructure crumbles. Governments lack frameworks to prioritize adaptation investments.</p>
+                </div>
+
+                <div class="crisis-card">
+                    <div class="crisis-location">Your Community</div>
+                    <h3>Local budgets stretched thin</h3>
+                    <div class="crisis-stat">$2.4T</div>
+                    <p>Annual climate adaptation funding gap globally. Your town council debates pool upgrades vs. solar installations. Without data-driven tools, these trade-offs feel impossible.</p>
+                </div>
+            </div>
+
+            <div class="solution-box">
+                <h3>Envira builds the missing infrastructure</h3>
+                <p>We create affordable, accessible frameworks that governments and institutions actually need — turning climate science into decisions that save lives and communities. From rural India to your local town hall.</p>
+            </div>
         </div>
     </section>
 
-    <section class="section section-light">
-        <div class="section-container">
-            <h2>Our Approach</h2>
+    <section class="approach-section">
+        <div class="approach-container">
+            <h2 class="section-title">How We Build Solutions</h2>
             <div class="approach-grid">
                 <div class="approach-card">
                     <div class="approach-number">1</div>
                     <h3>Research-Driven Frameworks</h3>
-                    <p>Building evidence-based policy frameworks grounded in environmental economics, climate science, and development theory.</p>
+                    <p>Building evidence-based policy frameworks grounded in environmental economics, climate science, and development theory—designed for real-world deployment.</p>
                 </div>
                 <div class="approach-card">
                     <div class="approach-number">2</div>
                     <h3>Data & Analytics Tools</h3>
-                    <p>Designing platforms and dashboards that make complex climate and financial data accessible, transparent, and actionable.</p>
+                    <p>Designing platforms and dashboards that make complex climate and financial data accessible, transparent, and actionable for decision-makers at every level.</p>
                 </div>
                 <div class="approach-card">
                     <div class="approach-number">3</div>
                     <h3>Institutional Collaboration</h3>
-                    <p>Partnering with universities, governments, and NGOs to test, refine, and scale our frameworks in real-world contexts.</p>
+                    <p>Partnering with universities, governments, and NGOs to test, refine, and scale our frameworks where they're needed most.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class="section-container">
-            <h2>Why Envira Exists</h2>
-            <p>The climate crisis demands more than traditional approaches. Existing climate finance mechanisms are too slow, too expensive, and inaccessible to the regions that need them most. Governments and institutions lack the frameworks to make informed decisions about climate adaptation and mitigation in resource-constrained environments.</p>
-            <p>Envira bridges this gap by creating scalable, evidence-based solutions that empower decision-makers with the tools they need to confront climate challenges effectively.</p>
-        </div>
+    <section class="cta-section">
+        <h2 class="cta-title">Be Part of the Solution</h2>
+        <p class="cta-text">Join a global network building climate finance infrastructure that matters.</p>
+        <a href="join.html" class="cta-button">Become an Ambassador</a>
     </section>
 
     <footer class="footer">
@@ -164,5 +256,22 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.crisis-card').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
