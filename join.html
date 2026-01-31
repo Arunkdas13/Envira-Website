@@ -20,22 +20,51 @@
         .cta-btn { background: #10b981; padding: 11px 24px; border-radius: 8px; text-decoration: none; color: white; font-weight: 700; font-size: 14px; transition: all 0.2s; }
         .cta-btn:hover { background: #059669; transform: translateY(-1px); }
 
-        .hero { padding: 160px 20px 100px; text-align: center; background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
-        .hero-label { display: inline-block; background: #d1fae5; color: #065f46; padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 13px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .hero h1 { font-size: 56px; font-weight: 800; color: #1f2937; margin-bottom: 24px; letter-spacing: -1px; }
-        .hero p { font-size: 20px; color: #6b7280; max-width: 700px; margin: 0 auto 40px; line-height: 1.7; }
-        .hero-note { font-size: 16px; color: #6b7280; margin-top: 30px; }
+        /* HERO */
+        .hero { padding: 180px 20px 120px; text-align: center; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); position: relative; overflow: hidden; }
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.15);
+            animation: float 25s ease-in-out infinite;
+        }
+        .circle-1 { width: 300px; height: 300px; top: -100px; left: -50px; animation-delay: 0s; }
+        .circle-2 { width: 400px; height: 400px; bottom: -150px; right: -100px; animation-delay: 5s; }
+        .circle-3 { width: 200px; height: 200px; top: 50%; left: 80%; animation-delay: 10s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.1); }
+            66% { transform: translate(-25px, 25px) scale(0.95); }
+        }
+        
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero-label { display: inline-block; background: white; color: #059669; padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 14px; margin-bottom: 28px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2); }
+        .hero h1 { font-size: 64px; font-weight: 800; color: #1f2937; margin-bottom: 28px; line-height: 1.1; letter-spacing: -1.5px; }
+        .hero p { font-size: 22px; color: #065f46; max-width: 750px; margin: 0 auto 20px; line-height: 1.7; font-weight: 600; }
+        .hero-note { font-size: 17px; color: #6b7280; margin-top: 20px; }
 
-        .positions { max-width: 1100px; margin: 0 auto; padding: 100px 20px; }
-        .position-grid { display: grid; gap: 30px; }
-        .position-card { background: white; border: 1px solid #e5e7eb; border-radius: 16px; padding: 40px; transition: all 0.3s; }
-        .position-card:hover { border-color: #10b981; box-shadow: 0 12px 32px rgba(16, 185, 129, 0.12); transform: translateY(-5px); }
-        .position-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .position-card h3 { font-size: 28px; font-weight: 800; color: #1f2937; letter-spacing: -0.5px; }
-        .position-card p { color: #6b7280; font-size: 17px; line-height: 1.7; margin-bottom: 24px; }
-        .apply-btn { background: #10b981; color: white; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; transition: all 0.3s; display: inline-block; }
-        .apply-btn:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3); }
+        /* AMBASSADOR SECTION */
+        .ambassador-section { padding: 100px 20px; background: white; }
+        .ambassador-container { max-width: 1000px; margin: 0 auto; }
+        .ambassador-card { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border: 2px solid #10b981; border-radius: 24px; padding: 70px 60px; text-align: center; box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15); }
+        .ambassador-badge { display: inline-block; background: #10b981; color: white; padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 15px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        .ambassador-card h2 { font-size: 48px; font-weight: 800; color: #1f2937; margin-bottom: 24px; letter-spacing: -1px; }
+        .ambassador-card .subtitle { font-size: 22px; color: #059669; font-weight: 700; margin-bottom: 40px; }
+        .ambassador-card p { font-size: 19px; color: #6b7280; line-height: 1.8; margin-bottom: 24px; text-align: left; }
+        
+        .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 50px 0; text-align: left; }
+        .benefit-item { background: white; border-left: 4px solid #10b981; padding: 24px; border-radius: 8px; }
+        .benefit-item h4 { font-size: 20px; font-weight: 800; color: #1f2937; margin-bottom: 10px; }
+        .benefit-item p { font-size: 16px; color: #6b7280; line-height: 1.7; margin: 0; }
 
+        .commitment-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 30px; border-radius: 12px; margin: 40px 0; text-align: left; }
+        .commitment-box h4 { font-size: 20px; font-weight: 800; color: #92400e; margin-bottom: 12px; }
+        .commitment-box p { font-size: 17px; color: #78350f; margin: 0; }
+
+        .apply-button { background: #10b981; color: white; padding: 20px 50px; border-radius: 14px; text-decoration: none; font-weight: 800; font-size: 20px; display: inline-block; transition: all 0.3s; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); margin-top: 30px; }
+        .apply-button:hover { background: #059669; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4); }
+
+        /* FOOTER */
         .footer { background: #f9fafb; padding: 80px 20px 40px; border-top: 1px solid #e5e7eb; }
         .footer-content { max-width: 1280px; margin: 0 auto; }
         .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
@@ -49,8 +78,10 @@
         .footer-bottom { border-top: 1px solid #e5e7eb; padding-top: 30px; text-align: center; color: #9ca3af; font-size: 14px; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 38px; }
-            .position-card h3 { font-size: 24px; }
+            .hero h1 { font-size: 40px; }
+            .ambassador-card h2 { font-size: 36px; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .ambassador-card { padding: 50px 30px; }
             .footer-main { grid-template-columns: 1fr; gap: 40px; }
             .nav-links { display: none; }
         }
@@ -74,55 +105,55 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-label">Apply for a Position</div>
-        <h1>Join the Movement</h1>
-        <p>Become part of a global network building frameworks that will reach governments and institutions worldwide. All roles require a minimum commitment of 2 hours per week.</p>
-        <p class="hero-note">If you would like to be interviewed, please email us at <strong>contact@envira.org</strong></p>
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="floating-circle circle-3"></div>
+        
+        <div class="hero-content">
+            <div class="hero-label">Join the Movement</div>
+            <h1>Become an Envira Ambassador</h1>
+            <p>Build frameworks that will reach governments and institutions worldwide.</p>
+            <p class="hero-note">Help create climate finance infrastructure for communities that need it most.</p>
+        </div>
     </section>
 
-    <div class="positions">
-        <div class="position-grid">
-            <div class="position-card">
-                <div class="position-header">
-                    <h3>Ambassador</h3>
-                </div>
-                <p>Work on policy frameworks and analytical tools that reach governments, universities, and international institutions. Contribute to frameworks designed for deployment in low-medium income countries facing climate crises.</p>
-                <a href="mailto:contact@envira.org" class="apply-btn">Apply Now</a>
-            </div>
+    <section class="ambassador-section">
+        <div class="ambassador-container">
+            <div class="ambassador-card">
+                <div class="ambassador-badge">Ambassador Position</div>
+                <h2>Build Climate Solutions That Matter</h2>
+                <p class="subtitle">Work on real frameworks reaching real communities</p>
+                
+                <p>As an Envira Ambassador, you'll contribute to policy frameworks and analytical tools that governments, universities, and institutions use to make critical climate decisions. Your work directly impacts communities facing climate crises—from rural India to your local town hall.</p>
 
-            <div class="position-card">
-                <div class="position-header">
-                    <h3>Research Lead</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <h4>Real Impact</h4>
+                        <p>Work on frameworks deployed in low-medium income countries and local communities worldwide.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4>Build Your Portfolio</h4>
+                        <p>Co-author publications, develop technical skills in climate finance and policy analysis.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4>Global Network</h4>
+                        <p>Connect with researchers, policy professionals, and fellow innovators across continents.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4>Hands-On Experience</h4>
+                        <p>Gain experience in environmental economics, data analytics, and institutional collaboration.</p>
+                    </div>
                 </div>
-                <p>Lead research initiatives focused on climate finance mechanisms and policy frameworks. Co-author publications, develop technical methodologies, and guide evidence-based solution development. Requires background in environmental economics or policy research.</p>
-                <a href="mailto:contact@envira.org" class="apply-btn">Apply Now</a>
-            </div>
 
-            <div class="position-card">
-                <div class="position-header">
-                    <h3>Data Analyst</h3>
+                <div class="commitment-box">
+                    <h4>Time Commitment</h4>
+                    <p>Minimum 2 hours per week. Flexible schedule. Remote work. Perfect for students passionate about climate action.</p>
                 </div>
-                <p>Build analytical tools and dashboards that transform complex climate and financial data into actionable insights. Work with carbon markets, emissions data, and municipal finance datasets. Proficiency in Python, R, or similar tools required.</p>
-                <a href="mailto:contact@envira.org" class="apply-btn">Apply Now</a>
-            </div>
 
-            <div class="position-card">
-                <div class="position-header">
-                    <h3>Policy Writer</h3>
-                </div>
-                <p>Craft policy briefs, framework documentation, and research summaries for government institutions and international organizations. Strong writing skills and understanding of environmental policy required.</p>
-                <a href="mailto:contact@envira.org" class="apply-btn">Apply Now</a>
-            </div>
-
-            <div class="position-card">
-                <div class="position-header">
-                    <h3>Partnerships Coordinator</h3>
-                </div>
-                <p>Build relationships with universities, NGOs, and government agencies to scale Envira frameworks. Experience in outreach, networking, or program coordination preferred.</p>
-                <a href="mailto:contact@envira.org" class="apply-btn">Apply Now</a>
+                <a href="mailto:contact@envira.org" class="apply-button">Apply Now</a>
             </div>
         </div>
-    </div>
+    </section>
 
     <footer class="footer">
         <div class="footer-content">
