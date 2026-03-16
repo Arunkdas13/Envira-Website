@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ClimaTech Policy Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#070d14;
+  --bg2:#0b1520;
+  --surface:#0f1e2e;
+  --surface2:#142333;
+  --surface3:#1a2d40;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.11);
+  --border3:rgba(255,255,255,0.18);
+  --text:#dde6ef;
+  --text2:#7a98b3;
+  --text3:#3e5a72;
+  --green:#18c98a;
+  --green2:#0f9e6b;
+  --green-dim:rgba(24,201,138,0.1);
+  --green-border:rgba(24,201,138,0.25);
+  --amber:#e6a82a;
+  --amber-dim:rgba(230,168,42,0.1);
+  --blue:#3a8fd4;
+  --blue-dim:rgba(58,143,212,0.1);
+  --red:#e05555;
+  --red-dim:rgba(224,85,85,0.1);
+  --purple:#8b6cf7;
+  --purple-dim:rgba(139,108,247,0.1);
+  --teal:#14b8a6;
+  --teal-dim:rgba(20,184,166,0.1);
+  --mono:'DM Mono',monospace;
+  --sans:'Syne',sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+  --r:10px;
+  --r-sm:6px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.5;}
+body{padding:20px 24px 40px;max-width:1180px;margin:0 auto;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px;}
+
+/* Header */
+.hdr{background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--r);padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;top:0;right:0;width:400px;height:100%;background:radial-gradient(ellipse at 80% 50%,rgba(24,201,138,0.05) 0%,transparent 70%);pointer-events:none;}
+.hdr-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+.hdr-left{}
+.hdr-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.hdr-title{font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-0.03em;color:#fff;display:flex;align-items:center;gap:10px;line-height:1.2;}
+.hdr-sub{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.7;max-width:500px;}
+.hdr-right{text-align:right;}
+.hdr-stat{font-family:var(--mono);font-size:10px;color:var(--text3);line-height:2;}
+.live-pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-dim);border:0.5px solid var(--green-border);color:var(--green);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* County selector grid */
+.county-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
+.cty-btn{padding:7px 6px;border-radius:var(--r-sm);background:var(--surface);border:0.5px solid var(--border);cursor:pointer;transition:all .18s;text-align:center;font-family:var(--sans);position:relative;}
+.cty-btn:hover{border-color:var(--border2);background:var(--surface2);}
+.cty-btn.on{background:var(--surface3);border-color:var(--border3);}
+.cty-name{font-size:11px;font-weight:600;color:var(--text);display:block;line-height:1.2;margin-bottom:2px;}
+.cty-state{font-size:9px;color:var(--text3);font-family:var(--mono);}
+.cty-tag{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;}
+
+/* Sector tabs */
+.sec-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.sec-btn{padding:6px 14px;border-radius:20px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);transition:all .18s;white-space:nowrap;}
+.sec-btn:hover{background:var(--surface2);}
+.sec-btn.on{color:#fff;border-color:transparent;}
+
+/* Info band */
+.info-band{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:14px;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.ib-name{font-family:var(--sans);font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;}
+.ib-desc{font-size:12px;color:var(--text2);line-height:1.6;max-width:520px;}
+.ib-stats{display:flex;gap:20px;flex-wrap:wrap;margin-left:auto;}
+.ib-stat{}
+.ib-sl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:3px;}
+.ib-sv{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--text);}
+
+/* 3-col main grid */
+.main-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:16px;}
+.card-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+.full-card{grid-column:1/-1;}
+.two-card{grid-column:span 2;}
+
+/* Tech bars */
+.tech-item{margin-bottom:10px;}
+.tech-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.tech-name{font-size:12px;color:var(--text);}
+.tech-pct{font-family:var(--mono);font-size:11px;color:var(--text3);}
+.tech-bar-bg{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;}
+.tech-bar-fill{height:100%;border-radius:2px;transition:width .5s ease;}
+.tech-org{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* Network list */
+.net-item{padding:9px 0;border-bottom:0.5px solid var(--border);display:flex;gap:10px;align-items:flex-start;}
+.net-item:last-child{border-bottom:none;padding-bottom:0;}
+.net-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.net-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:1px;}
+.net-desc{font-size:11px;color:var(--text3);line-height:1.5;}
+.net-type{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:1px 6px;border-radius:4px;display:inline-block;margin-top:3px;}
+
+/* Policy section */
+.pol-tier-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;margin-top:4px;}
+.pol-tier-label{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text);}
+.pol-tier-badge{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:2px 8px;border-radius:4px;}
+.pol-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px;}
+.pol-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .18s;position:relative;}
+.pol-card:hover{border-color:var(--border2);background:var(--surface2);}
+.pol-card.on{border-width:1px;}
+.pol-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.pol-card-name{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text);line-height:1.3;}
+.pol-card-impact{font-family:var(--mono);font-size:11px;font-weight:500;}
+.pol-card-desc{font-size:11px;color:var(--text3);line-height:1.5;margin-bottom:6px;}
+.pol-card-meta{display:flex;gap:6px;flex-wrap:wrap;}
+.pol-tag{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:1px 6px;border-radius:3px;}
+.pol-diff{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:1px 6px;border-radius:3px;}
+.check-indicator{position:absolute;top:10px;right:10px;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;}
+.pol-card.on .check-indicator{border-color:currentColor;}
+.check-mark{opacity:0;font-size:9px;transition:opacity .18s;}
+.pol-card.on .check-mark{opacity:1;}
+
+/* Impact bar */
+.impact-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:0;}
+.impact-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.impact-title{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);}
+.impact-score{font-family:var(--mono);font-size:18px;font-weight:500;}
+.impact-bar-bg{height:8px;background:var(--bg);border:0.5px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.impact-bar-fill{height:100%;border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1),background .3s;}
+.impact-breakdown{display:flex;gap:12px;flex-wrap:wrap;}
+.ibd{font-size:11px;color:var(--text3);}
+.ibd span{color:var(--text2);font-weight:500;}
+
+/* Divider */
+hr{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
+.section-title{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+
+/* Radar wrapper */
+.radar-wrap{position:relative;height:200px;max-width:260px;margin:0 auto;}
+
+/* Footer */
+.footer{margin-top:24px;font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;line-height:2;letter-spacing:.05em;}
+
+/* Responsive */
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr 1fr;}
+  .two-card{grid-column:span 1;}
+  .county-grid{grid-template-columns:repeat(4,1fr);}
+  .pol-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  body{padding:12px;}
+  .main-grid{grid-template-columns:1fr;}
+  .two-card{grid-column:span 1;}
+  .county-grid{grid-template-columns:repeat(3,1fr);}
+  .pol-grid{grid-template-columns:1fr;}
+  .ib-stats{margin-left:0;}
+}
+
+/* Animate in */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.anim{animation:fadeUp .3s ease both;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-left">
+      <div class="hdr-eyebrow">Policy Intelligence Tool · v2.0</div>
+      <div class="hdr-title">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex-shrink:0"><path d="M11 2L13.5 8H20L14.5 12L16.5 18L11 14L5.5 18L7.5 12L2 8H8.5L11 2Z" stroke="#18c98a" stroke-width="1.3" stroke-linejoin="round" fill="rgba(24,201,138,0.1)"/></svg>
+        ClimaTech Policy Navigator
+        <span class="live-pill"><span class="live-dot"></span>Live</span>
+      </div>
+      <div class="hdr-sub">Geospatial climate-tech intelligence for federal, state &amp; local policymakers. Maps actual technology ecosystems, innovation networks, and evidence-based policy levers by county and sector.</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-stat">14 counties · 6 sectors · 3 policy tiers</div>
+      <div class="hdr-stat">Sources: DOE, BEA, EPA, NREL, Bloomberg NEF</div>
+      <div class="hdr-stat">Updated: 2025 · Framework: Das et al. (2025)</div>
+    </div>
+  </div>
+</div>
+
+<!-- County selector -->
+<div class="section-title">Select county</div>
+<div class="county-grid" id="county-grid"></div>
+
+<!-- Sector selector -->
+<div class="section-title">Select sector</div>
+<div class="sec-row" id="sec-row"></div>
+
+<!-- Info band -->
+<div class="info-band" id="info-band"></div>
+
+<!-- Main grid: tech + network + radar -->
+<div class="main-grid" id="main-grid"></div>
+
+<!-- Policy section -->
+<div id="policy-section"></div>
+
+<!-- Impact score -->
+<div class="impact-card" id="impact-card">
+  <div class="impact-header">
+    <span class="impact-title">Projected 5-year policy impact score</span>
+    <span class="impact-score" id="i-score" style="color:var(--text2)">0 / 100</span>
+  </div>
+  <div class="impact-bar-bg"><div class="impact-bar-fill" id="i-bar" style="width:0%;background:var(--blue);"></div></div>
+  <div class="impact-breakdown" id="i-detail"><span class="ibd">Select policy levers above to model combined 5-year innovation impact.</span></div>
+</div>
+
+<div class="footer">ClimaTech Policy Navigator · Data: U.S. DOE, BEA, EPA, NREL, FAA, Bloomberg NEF, IEA · Framework: Das et al. (2025) · For policymaker and research use</div>
+
+<script>
+/* ===================== DATA ===================== */
+
+const COUNTIES = [
+  {
+    id:'travis-tx', name:'Travis', state:'TX', city:'Austin',
+    pop:'1.29M', gdp:'$168B', jobs:'32,400 clean energy', color:'#18c98a',
+    desc:'Austin\'s Travis County anchors Texas\'s fastest-growing clean energy market. Home to Tesla Gigafactory Texas, the Lower Colorado River Authority\'s renewable buildout, and a deep pool of UT Austin energy researchers, Travis combines manufacturing scale with R&D depth.',
+  },
+  {
+    id:'santa-clara-ca', name:'Santa Clara', state:'CA', city:'San Jose',
+    pop:'1.94M', gdp:'$340B', jobs:'58,200 clean energy', color:'#3a8fd4',
+    desc:'Silicon Valley\'s Santa Clara County is the world\'s foremost cleantech VC hub. Stanford\'s Precourt Institute, Google\'s 24/7 carbon-free energy commitments, and a dense network of fuel-cell and solar R&D companies make it the premier innovation testbed.',
+  },
+  {
+    id:'harris-tx', name:'Harris', state:'TX', city:'Houston',
+    pop:'4.73M', gdp:'$374B', jobs:'41,000 clean energy', color:'#8b6cf7',
+    desc:'The energy capital of the world is reinventing itself. Harris County hosts HyVelocity — one of DOE\'s 7 Regional Clean Hydrogen Hubs — plus the world\'s largest CO₂ capture cluster at the Port of Houston and growing offshore wind supply chain infrastructure.',
+  },
+  {
+    id:'king-wa', name:'King', state:'WA', city:'Seattle',
+    pop:'2.27M', gdp:'$283B', jobs:'29,600 clean energy', color:'#14b8a6',
+    desc:'Seattle\'s King County leads on electrification, green hydrogen, and clean maritime. Amazon\'s Climate Pledge HQ, Seattle City Light\'s 100% renewable grid, PNNL partnerships, and a booming port electrification program position it at the frontier of multiple sectors.',
+  },
+  {
+    id:'middlesex-ma', name:'Middlesex', state:'MA', city:'Cambridge',
+    pop:'1.63M', gdp:'$241B', jobs:'44,800 clean energy', color:'#e05555',
+    desc:'Home to MIT and Harvard, Middlesex County (Cambridge/Somerville) is the densest clean energy R&D cluster in the U.S. The MIT Energy Initiative, Greentown Labs (largest cleantech incubator), and proximity to Mass Clean Energy Center drive an outsized startup pipeline.',
+  },
+  {
+    id:'maricopa-az', name:'Maricopa', state:'AZ', city:'Phoenix',
+    pop:'4.49M', gdp:'$237B', jobs:'21,300 clean energy', color:'#e6a82a',
+    desc:'Arizona\'s sun-belt powerhouse. Maricopa is the #1 utility-scale solar deployment county in the U.S. APS\'s 2050 net-zero commitment, Intel\'s semiconductor fab electrification, and the nation\'s largest agrivoltaics corridor make it a solar policy laboratory.',
+  },
+  {
+    id:'cook-il', name:'Cook', state:'IL', city:'Chicago',
+    pop:'5.09M', gdp:'$521B', jobs:'52,100 clean energy', color:'#3a8fd4',
+    desc:'Chicago\'s Cook County drives Midwest clean energy manufacturing and offshore wind development on Lake Michigan. The MISO grid interconnection hub, world-class universities (UChicago, Northwestern), and strong union workforce make it critical to the industrial energy transition.',
+  },
+  {
+    id:'hennepin-mn', name:'Hennepin', state:'MN', city:'Minneapolis',
+    pop:'1.27M', gdp:'$121B', jobs:'18,400 clean energy', color:'#18c98a',
+    desc:'Minneapolis\'s Hennepin County sits at the crossroads of Great Plains wind and the Corn Belt biofuels economy. Xcel Energy\'s aggressive renewable targets, 3M\'s cleantech R&D, and the University of Minnesota\'s bioproducts and bioenergy research make it a Midwest anchor.',
+  },
+  {
+    id:'wake-nc', name:'Wake', state:'NC', city:'Raleigh',
+    pop:'1.13M', gdp:'$96B', jobs:'14,200 clean energy', color:'#e6a82a',
+    desc:'Raleigh\'s Research Triangle Park — shared between Wake, Durham, and Orange counties — is a burgeoning cleantech corridor. Duke Energy\'s net-zero investments, NC State\'s Clean Energy Technology Center, and a semiconductor cluster that demands clean power all converge here.',
+  },
+  {
+    id:'denver-co', name:'Denver', state:'CO', city:'Denver',
+    pop:'738K', gdp:'$89B', jobs:'17,600 clean energy', color:'#8b6cf7',
+    desc:'Colorado\'s capital has set the most aggressive local clean energy benchmarks in the Mountain West. NREL (National Renewable Energy Laboratory) headquarters, Excel Energy\'s coal phase-out, and Denver\'s building performance standards law have made it a national policy model.',
+  },
+  {
+    id:'multnomah-or', name:'Multnomah', state:'OR', city:'Portland',
+    pop:'820K', gdp:'$78B', jobs:'12,400 clean energy', color:'#14b8a6',
+    desc:'Portland\'s Multnomah County leads on electrification and green hydrogen for heavy industry. The Port of Portland\'s hydrogen fueling commitments, PGE\'s clean grid, and Oregon\'s stringent clean fuels standard create a compelling test market for emerging technologies.',
+  },
+  {
+    id:'bexar-tx', name:'Bexar', state:'TX', city:'San Antonio',
+    pop:'2.1M', gdp:'$122B', jobs:'19,800 clean energy', color:'#e05555',
+    desc:'CPS Energy — San Antonio\'s municipal utility — has the most ambitious renewable energy plan of any large U.S. municipal utility, targeting 50% renewables by 2030 and 80% by 2040. Bexar hosts massive utility-scale solar farms and growing battery storage deployments.',
+  },
+  {
+    id:'washtenaw-mi', name:'Washtenaw', state:'MI', city:'Ann Arbor',
+    pop:'374K', gdp:'$38B', jobs:'9,600 clean energy', color:'#3a8fd4',
+    desc:'Ann Arbor\'s Washtenaw County is ground zero for EV battery R&D and clean mobility. Ford and GM\'s electrification R&D centers, the University of Michigan Energy Institute, American Center for Mobility, and CATL\'s North American partnerships make it a battery technology nexus.',
+  },
+  {
+    id:'alameda-ca', name:'Alameda', state:'CA', city:'Oakland',
+    pop:'1.67M', gdp:'$152B', jobs:'27,300 clean energy', color:'#18c98a',
+    desc:'Oakland\'s Alameda County anchors the Bay Area\'s clean port economy and rooftop solar equity agenda. The Port of Oakland\'s electrification mandate, Lawrence Berkeley National Laboratory, and East Bay Community Energy (EBCE) as an innovative CCA create a model for environmental justice-centered clean energy.',
+  },
+];
+
+const SECTORS = {
+  Solar:{
+    label:'Solar Energy', color:'#e6a82a',
+    tech:[
+      {name:'Utility-Scale Photovoltaic (PV)',pct:91,orgs:'First Solar, NextEra, Ørsted — APS Palo Verde corridor'},
+      {name:'Distributed Rooftop Solar',pct:78,orgs:'Sunrun, SunPower, Sunnova — residential + C&I markets'},
+      {name:'Community Solar / Virtual Net Metering',pct:62,orgs:'Clearway, Sol Systems — LMI subscriber programs'},
+      {name:'Agrivoltaics (Dual-Use Solar+Agriculture)',pct:31,orgs:'InSPIRE network, NREL, Nexamp — AZ and CA corridors'},
+      {name:'Building-Integrated PV (BIPV)',pct:24,orgs:'Tesla Solar Roof, CertainTeed, SunRoof — urban infill'},
+      {name:'Perovskite & Next-Gen Cells (R&D)',pct:14,orgs:'MIT PVLAB, NREL, Swift Solar — early commercialization'},
+    ],
+    netColor:'#e6a82a',
+  },
+  Wind:{
+    label:'Wind Energy', color:'#14b8a6',
+    tech:[
+      {name:'Onshore Wind Farms (>10MW)',pct:87,orgs:'GE Vernova, Vestas, Siemens Gamesa — Great Plains belt'},
+      {name:'Offshore Wind (Fixed-Bottom)',pct:58,orgs:'Vineyard Wind, Dominion Energy, Equinor — East Coast'},
+      {name:'Distributed / Small Wind (<1MW)',pct:35,orgs:'WindEnergy7, Bergey Windpower — rural + industrial'},
+      {name:'Floating Offshore Wind',pct:18,orgs:'Principle Power, X1 Wind — Pacific Coast pilots'},
+      {name:'Repowering Aging Wind Assets',pct:42,orgs:'EDF Renewables, RWE — PTC optimization projects'},
+      {name:'Airborne Wind Energy (AWE)',pct:9,orgs:'Makani (archive), Kitemill, SkySails — R&D stage'},
+    ],
+    netColor:'#14b8a6',
+  },
+  Hydrogen:{
+    label:'Green Hydrogen', color:'#8b6cf7',
+    tech:[
+      {name:'PEM Electrolysis (Proton Exchange Membrane)',pct:68,orgs:'Plug Power, Nel, Cummins, ITM Power — MW-scale'},
+      {name:'Alkaline Water Electrolysis',pct:55,orgs:'Nel Hydrogen, ThyssenKrupp nucera — industrial scale'},
+      {name:'Solid Oxide Electrolysis (SOEC)',pct:29,orgs:'Bloom Energy, OxEon, Topsoe — high-temp co-electrolysis'},
+      {name:'Green Ammonia (H₂ carrier / fertilizer)',pct:22,orgs:'Yara, CF Industries, Fortescue Future Industries'},
+      {name:'H₂ Fuel Cells (Transport & Stationary)',pct:44,orgs:'Toyota, Hyundai, Ballard, Bloom — fleet deployment'},
+      {name:'Underground H₂ Storage',pct:11,orgs:'HyVelocity, Chevron — salt cavern feasibility'},
+    ],
+    netColor:'#8b6cf7',
+  },
+  CCS:{
+    label:'Carbon Capture & Storage', color:'#e05555',
+    tech:[
+      {name:'Post-Combustion Capture (industrial point source)',pct:61,orgs:'Shell Quest, SLB (Schlumberger), Carbon Clean'},
+      {name:'Direct Air Capture (DAC)',pct:38,orgs:'Climeworks, 1PointFive (Occidental Stratos), Heirloom'},
+      {name:'BECCS (Bioenergy + CCS)',pct:25,orgs:'Drax, Archer-Daniels-Midland — IL Decatur Project'},
+      {name:'Enhanced Weathering / Mineralization',pct:16,orgs:'Lithos Carbon, UNDO, Eion — agricultural carbon'},
+      {name:'Pre-Combustion Capture (blue hydrogen)',pct:33,orgs:'Air Products, ExxonMobil — CCS hub projects'},
+      {name:'CO₂ Enhanced Oil Recovery (EOR)',pct:42,orgs:'Denbury, Occidental — Permian Basin pipelines'},
+    ],
+    netColor:'#e05555',
+  },
+  SAF:{
+    label:'Sustainable Aviation Fuel', color:'#18c98a',
+    tech:[
+      {name:'HEFA (Hydroprocessed Esters & Fatty Acids)',pct:82,orgs:'World Energy (LAX), Neste, HollyFrontier — jet supply'},
+      {name:'Fischer-Tropsch (FT) Synthesis',pct:48,orgs:'VELOCYS, SkyNRG, Fulcrum Bioenergy — MSW feedstock'},
+      {name:'Alcohol-to-Jet (ATJ)',pct:41,orgs:'LanzaJet (Freedom Pines, GA), Gevo — isobutanol path'},
+      {name:'Power-to-Liquid (PtL / e-fuels)',pct:19,orgs:'Norsk e-Fuel, Infinium, HIF Global — electrofuels'},
+      {name:'Catalytic Hydrothermolysis (CHJ)',pct:14,orgs:'Applied Research Associates, Chevron — camelina pathway'},
+      {name:'Pyrolysis + Upgrading',pct:11,orgs:'Forge Hydrocarbons, Vertimass — lipid-free feedstocks'},
+    ],
+    netColor:'#18c98a',
+  },
+  Storage:{
+    label:'Energy Storage', color:'#3a8fd4',
+    tech:[
+      {name:'Lithium-Ion Grid Storage (4h)',pct:88,orgs:'Tesla Megapack, Fluence, Wartsila — utility BESS'},
+      {name:'Flow Batteries (Vanadium / Iron)',pct:32,orgs:'Invinity, ESS Tech, VRB Energy — long-duration'},
+      {name:'Long-Duration Storage (>10h)',pct:21,orgs:'Form Energy (iron-air), Ambri, Malta — seasonal'},
+      {name:'Pumped Hydro Storage',pct:55,orgs:'Eagle Crest, Rye Development — closed-loop siting'},
+      {name:'Thermal / Molten Salt Storage',pct:18,orgs:'Antora Energy, Malta, MGA Thermal — industrial heat'},
+      {name:'Green H₂ as Seasonal Storage',pct:24,orgs:'ACES Delta (Milford UT), HyVelocity — cavern-based'},
+    ],
+    netColor:'#3a8fd4',
+  },
+};
+
+/* County × Sector networks */
+const NETWORKS = {
+  'travis-tx':{
+    Solar:[
+      {name:'Lower Colorado River Authority (LCRA)',type:'Utility',color:'#e6a82a',desc:'Manages 68,000 miles of transmission; operates Gilleland Creek Solar farm and renewable integration programs for central TX.'},
+      {name:'UT Austin Energy Institute',type:'R&D',color:'#3a8fd4',desc:'Leads grid modernization and solar integration research; partners with ERCOT on distributed resource modeling.'},
+      {name:'SolarEdge Texas Service Hub',type:'Industry',color:'#e6a82a',desc:'Regional operations center for inverter deployment across commercial and utility-scale TX projects.'},
+      {name:'Austin Energy Green Choice',type:'Utility',color:'#18c98a',desc:'Nation\'s longest-running green power program; 900 MW+ renewable portfolio serving 35,000+ subscribers.'},
+    ],
+    Hydrogen:[
+      {name:'Texas Hydrogen Alliance',type:'Advocacy',color:'#8b6cf7',desc:'Statewide coalition coordinating H2 policy, industry siting, and workforce development across TX counties.'},
+      {name:'Applied Research Labs (UT Austin)',type:'R&D',color:'#3a8fd4',desc:'DoD-funded R&D lab expanding into clean hydrogen propulsion; strong naval/aerospace transition pipeline.'},
+    ],
+    Wind:[
+      {name:'ERCOT Grid Operations (Austin HQ)',type:'Grid Operator',color:'#14b8a6',desc:'Manages 99% of TX load; HQ in Austin; critical node for integrating >35 GW of existing TX wind capacity.'},
+      {name:'Texas Renewable Energy Industries Alliance (TREIA)',type:'Advocacy',color:'#18c98a',desc:'Austin-based statewide wind and solar advocacy; leads legislative engagement with TX legislature.'},
+    ],
+    CCS:[
+      {name:'UT Austin Bureau of Economic Geology',type:'R&D',color:'#e05555',desc:'World-leading geological carbon storage research; mapped 350+ potential TX storage formations.'},
+    ],
+    SAF:[
+      {name:'Austin-Bergstrom SAF Coalition',type:'Industry',color:'#18c98a',desc:'Airport-led coalition targeting 10% SAF blend by 2030; partners with LanzaJet for ATJ supply chain.'},
+      {name:'Southwest Research Institute',type:'R&D',color:'#3a8fd4',desc:'San Antonio / Austin corridor; jet fuel combustion and emissions certification R&D for FAA.'},
+    ],
+    Storage:[
+      {name:'Tesla Gigafactory Texas (Energy Division)',type:'Manufacturing',color:'#3a8fd4',desc:'Produces 4680 battery cells and Megapack utility storage systems; 10 GWh/year capacity ramp.'},
+      {name:'Broad Reach Power (Austin HQ)',type:'Developer',color:'#e6a82a',desc:'TX\'s largest standalone battery storage developer; 1.5 GW operational BESS across ERCOT.'},
+    ],
+  },
+  'santa-clara-ca':{
+    Solar:[
+      {name:'Stanford Precourt Institute for Energy',type:'R&D',color:'#3a8fd4',desc:'Leads perovskite tandem and BIPV commercialization research; >$40M annual cleantech funding.'},
+      {name:'Silicon Valley Clean Energy (SVCE)',type:'Utility/CCA',color:'#e6a82a',desc:'Community Choice Aggregator serving 300,000+ customers with 100% carbon-free electricity since 2017.'},
+      {name:'SunPower Corporation (HQ)',type:'Industry',color:'#e6a82a',desc:'High-efficiency Maxeon cell R&D and commercial project development; pioneered IBC cell technology.'},
+      {name:'Google 24/7 CFE Program',type:'Corporate',color:'#18c98a',desc:'Anchor buyer for new solar PPAs; first company to match hourly clean energy in major global markets.'},
+    ],
+    Hydrogen:[
+      {name:'Bloom Energy (San Jose HQ)',type:'Industry',color:'#8b6cf7',desc:'Solid oxide fuel cells and electrolyzers; $2B+ revenue, serves Apple, Google, AT&T data centers.'},
+      {name:'Clean Air Force of the Central Coast',type:'Advocacy',color:'#18c98a',desc:'H2 truck and fleet deployment coalition; manages HVIP incentive applications for heavy-duty H2 vehicles.'},
+    ],
+    Wind:[
+      {name:'CAISO Grid Operations',type:'Grid Operator',color:'#14b8a6',desc:'California ISO coordinates offshore wind integration; offshore CPUC procurement processes center here.'},
+    ],
+    CCS:[
+      {name:'Global CCS Institute (West Coast Office)',type:'Policy',color:'#e05555',desc:'Multinational CCS policy and project monitoring org; advises CA Air Resources Board on DAC standards.'},
+      {name:'Carbon180 (HQ)',type:'Advocacy',color:'#3a8fd4',desc:'CDR policy advocacy and portfolio management; drives CA enhanced weathering and soil carbon programs.'},
+    ],
+    SAF:[
+      {name:'CAAFI (Commercial Aviation Fuels Initiative)',type:'Industry',color:'#18c98a',desc:'FAA-industry partnership driving SAF certification pathways; West Coast hub for HEFA and ATJ approvals.'},
+      {name:'SFO Green Gateway Initiative',type:'Airport',color:'#e6a82a',desc:'SFO and SJC coordinating SAF blending mandates and carbon-neutral terminal construction programs.'},
+    ],
+    Storage:[
+      {name:'Tesla Energy (Fremont/Palo Alto)',type:'Industry',color:'#3a8fd4',desc:'Megapack assembly and Autobidder AI grid trading software; 10+ GW of global BESS deployed.'},
+      {name:'Form Energy (Somerville, MA — HQ nearby)',type:'R&D',color:'#8b6cf7',desc:'Iron-air 100h storage technology; first Antora pilot near Bay Area industrial corridor.'},
+    ],
+  },
+  'harris-tx':{
+    Solar:[
+      {name:'NRG Energy (Houston HQ)',type:'Utility',color:'#e6a82a',desc:'Largest competitive power generator in TX; rapidly expanding utility-scale solar portfolio across Gulf Coast.'},
+    ],
+    Hydrogen:[
+      {name:'HyVelocity H2 Hub (DOE Regional Hub)',type:'Federal Hub',color:'#8b6cf7',desc:'$1.2B DOE-selected regional clean hydrogen hub; anchored by Air Products, Chevron, CenterPoint, and Port of Houston. Targets 45 kg/day H₂ by 2030.'},
+      {name:'Houston Hydrogen Coalition',type:'Advocacy',color:'#18c98a',desc:'150+ member industry coalition; coordinates permitting, infrastructure siting, and federal advocacy for TX H2 cluster.'},
+      {name:'Rice University Hydrogen Energy Research',type:'R&D',color:'#3a8fd4',desc:'Baker Institute energy fellows advise on H2 economics; Oshman Engineering Design Kitchen builds H2 prototypes.'},
+      {name:'Air Products & Chemicals (major facility)',type:'Industry',color:'#8b6cf7',desc:'World\'s largest H2 producer; operates 18,000-mile H2 pipeline network; leads net-zero H2 production projects.'},
+    ],
+    CCS:[
+      {name:'Port of Houston CO₂ Capture Cluster',type:'Industry',color:'#e05555',desc:'World\'s largest proposed industrial CCS cluster; 100M tons/year potential; anchored by LyondellBasell, Shell, Chevron.'},
+      {name:'Carbon Capture Coalition (TX Chapter)',type:'Advocacy',color:'#3a8fd4',desc:'Industry-NGO coalition advancing 45Q tax credit utilization; connects Houston industrial emitters with storage operators.'},
+      {name:'ExxonMobil Low Carbon Solutions',type:'Industry',color:'#e05555',desc:'Baytown blue H2 + CCS facility; targeting 1 Bcf/day hydrogen with 10M ton/yr CO₂ capture by 2030.'},
+    ],
+    Wind:[
+      {name:'Gulf Wind Technology Collaborative',type:'R&D',color:'#14b8a6',desc:'University of Houston + TAMU partnership; offshore wind resource assessment and supply chain workforce development.'},
+    ],
+    SAF:[
+      {name:'World Energy Gulf Coast Operations',type:'Industry',color:'#18c98a',desc:'Largest SAF producer in the Western Hemisphere; Paramount, CA and Houston facilities; HEFA pathway.'},
+      {name:'United Airlines Carbon Reduction Hub',type:'Corporate',color:'#3a8fd4',desc:'Houston IAH is United\'s largest hub; 2B gallon SAF commitment; partners with Fulcrum and LanzaJet.'},
+    ],
+    Storage:[
+      {name:'ACES Delta — Gulf Coast Battery Partnership',type:'Developer',color:'#3a8fd4',desc:'Developing salt-cavern H2 storage adjacent to BESS assets; integrates seasonal storage into ERCOT market.'},
+    ],
+  },
+  'king-wa':{
+    Solar:[
+      {name:'Seattle City Light Renewable Portfolio',type:'Utility',color:'#e6a82a',desc:'100% renewable electricity utility serving 450,000+ customers; integrating utility-scale solar from eastern WA into grid.'},
+    ],
+    Hydrogen:[
+      {name:'Northwest Hydrogen Alliance',type:'Advocacy',color:'#8b6cf7',desc:'Pacific Northwest coalition accelerating green H2 for maritime, aviation, and heavy industry decarbonization.'},
+      {name:'Pacific Northwest National Laboratory (PNNL)',type:'Federal Lab',color:'#3a8fd4',desc:'DOE lab in Richland, WA; leads H2 storage materials, electrolysis catalysts, and grid integration research.'},
+      {name:'Fortescue Future Industries (Seattle Office)',type:'Industry',color:'#8b6cf7',desc:'Australian H2 major opening North America operations hub; targeting green H2 for shipping and mining.'},
+      {name:'Port of Seattle Electrification Program',type:'Infrastructure',color:'#14b8a6',desc:'Shore power mandate; 400+ vessels electrified; green methanol and H2 bunkering feasibility underway.'},
+    ],
+    Wind:[
+      {name:'Puget Sound Energy Offshore Wind',type:'Utility',color:'#14b8a6',desc:'IRP includes 2 GW offshore wind by 2035; partnering with BOEM on Pacific floating offshore WA leases.'},
+      {name:'Clean Energy Transition Institute (UW)',type:'R&D',color:'#3a8fd4',desc:'University of Washington cross-disciplinary center; wind resource modeling and grid flexibility research.'},
+    ],
+    CCS:[
+      {name:'Dry Creek Geologic Storage Project',type:'Infrastructure',color:'#e05555',desc:'Feasibility study for CO₂ storage in basalt formations under WA and OR; PNNL-led characterization.'},
+    ],
+    SAF:[
+      {name:'Alaska Airlines SAF Leadership Program',type:'Corporate',color:'#18c98a',desc:'SEA-based airline; largest SAF commitment per ASM of any U.S. carrier; Power-to-Liquid R&D partner.'},
+      {name:'SEA-TAC SAF Infrastructure Working Group',type:'Airport',color:'#e6a82a',desc:'Port of Seattle + FAA coordinating hydrant fueling upgrades for centralized SAF blending by 2027.'},
+    ],
+    Storage:[
+      {name:'Amazon Energy Team (HQ)',type:'Corporate',color:'#3a8fd4',desc:'Amazon Climate Pledge driving 100GWh+ BESS procurement globally; runs largest corporate PPA portfolio.'},
+      {name:'Convergent Energy + Power (Pacific NW)',type:'Developer',color:'#e6a82a',desc:'Behind-the-meter and front-of-meter battery storage; 500 MW active King County region pipeline.'},
+    ],
+  },
+  'middlesex-ma':{
+    Solar:[
+      {name:'MIT Energy Initiative (MITEI)',type:'R&D',color:'#3a8fd4',desc:'Perovskite and tandem solar commercialization; low-cost manufacturing research for next-gen PV cells.'},
+      {name:'Greentown Labs (Somerville)',type:'Incubator',color:'#e6a82a',desc:'Largest clean energy incubator in the U.S.; 100+ startups including solar inverter, agrivoltaics, BIPV companies.'},
+    ],
+    Hydrogen:[
+      {name:'New England Clean Hydrogen Hub (NECH2)',type:'Federal Hub',color:'#8b6cf7',desc:'DOE-designated hub; MIT, UMass, National Grid coordinating green H2 for industrial and maritime users.'},
+      {name:'Advent Technologies (Boston)',type:'Industry',color:'#8b6cf7',desc:'High-temperature PEM fuel cells for marine and defense; DARPA and DOE partnerships.'},
+    ],
+    Wind:[
+      {name:'Vineyard Wind Offshore Hub (supply chain)',type:'Industry',color:'#14b8a6',desc:'800 MW first US commercial offshore wind; Avangrid + Copenhagen Infrastructure; O&M hub at New Bedford.'},
+      {name:'MassClean Energy Center (MassCEC)',type:'State Agency',color:'#18c98a',desc:'State clean energy investment vehicle; offshore wind workforce training, supply chain development grants.'},
+    ],
+    CCS:[
+      {name:'Harvard Center for the Environment',type:'R&D',color:'#e05555',desc:'Leads enhanced weathering and ocean CDR feasibility research; policy design for U.S. CDR market rules.'},
+    ],
+    SAF:[
+      {name:'MIT Laboratory for Aviation & the Environment',type:'R&D',color:'#18c98a',desc:'Lifecycle emissions modeling for SAF pathways; ICAO CORSIA methodology development partnership.'},
+      {name:'Boston Logan SAF Adoption Consortium',type:'Airport',color:'#e6a82a',desc:'Massport + Delta + JetBlue coordinating SAF supply agreements; targeting 5% blend by 2027.'},
+    ],
+    Storage:[
+      {name:'Form Energy (Cambridge, MA)',type:'Industry',color:'#3a8fd4',desc:'Iron-air 100-hour battery HQ; $450M Series E; first commercial deployment in Georgia; scaling to MA.'},
+      {name:'Commonwealth Fusion Systems (CFS)',type:'R&D',color:'#8b6cf7',desc:'Compact fusion reactor development; SPARC tokamak aims to demonstrate net energy gain by 2025.'},
+    ],
+  },
+  'maricopa-az':{
+    Solar:[
+      {name:'Arizona Public Service (APS)',type:'Utility',color:'#e6a82a',desc:'2050 net-zero commitment; Palo Verde Generating Station + 3+ GW solar pipeline; leads AZ solar IRP process.'},
+      {name:'SRP (Salt River Project)',type:'Utility',color:'#e6a82a',desc:'Nation\'s largest public power utility by customers; aggressively adding distributed solar + VPP programs.'},
+      {name:'First Solar (Tempe HQ)',type:'Manufacturing',color:'#18c98a',desc:'Only major U.S.-owned utility-scale solar manufacturer; CdTe thin-film technology; 20+ GW deployed globally.'},
+      {name:'AZ Commerce Authority Clean Energy Hub',type:'State Agency',color:'#3a8fd4',desc:'State economic development arm actively recruiting solar manufacturing and battery storage companies.'},
+    ],
+    Hydrogen:[
+      {name:'Southwest Research Institute AZ Division',type:'R&D',color:'#8b6cf7',desc:'H2 combustion engine testing for heavy-duty vehicles; partners with Cummins and Navistar.'},
+    ],
+    Wind:[],
+    CCS:[
+      {name:'Arizona Carbon Sequestration Initiative (ASU)',type:'R&D',color:'#e05555',desc:'Arizona State University DAC research group; desert environment enhances DAC efficiency; field pilots ongoing.'},
+    ],
+    SAF:[
+      {name:'Phoenix Sky Harbor SAF Initiative',type:'Airport',color:'#18c98a',desc:'City of Phoenix aviation department targeting 10M gallon/year SAF blending by 2028; partnering with HEFA suppliers.'},
+    ],
+    Storage:[
+      {name:'AES / Fluence Desert Storage Projects',type:'Developer',color:'#3a8fd4',desc:'Multiple operational BESS sites >500 MW; AZ duck-curve management; Virtual Power Plant programs with APS.'},
+      {name:'Qcells + Hanwha AZ Battery R&D',type:'R&D',color:'#e6a82a',desc:'Korean chaebol expanding into U.S. storage manufacturing; Mesa, AZ facility planned for 2026.'},
+    ],
+  },
+  'cook-il':{
+    Solar:[
+      {name:'ComEd Solar Program',type:'Utility',color:'#e6a82a',desc:'Illinois Shines community solar and FEJA low-income solar initiatives; 1,000+ MW distributed solar pipeline.'},
+    ],
+    Wind:[
+      {name:'Lake Michigan Offshore Wind',type:'Developer',color:'#14b8a6',desc:'Emerging offshore wind area; Ørsted, Equinor feasibility studies; BOEM freshwater wind leasing framework.'},
+      {name:'MISO (Midcontinent ISO — Chicago HQ)',type:'Grid Operator',color:'#3a8fd4',desc:'Largest U.S. grid operator by land area; interconnecting 100+ GW Great Plains wind; Long Range Transmission Plan ongoing.'},
+      {name:'American Clean Power Association (Midwest)',type:'Advocacy',color:'#18c98a',desc:'ACP Midwest chapter; leads IL wind siting reform, offshore freshwater wind federal advocacy.'},
+    ],
+    Hydrogen:[
+      {name:'Midwest Alliance for Clean Hydrogen (MachH2)',type:'Federal Hub',color:'#8b6cf7',desc:'DOE Hub centered in IL; targets steel, agriculture, and petrochemical H2 decarbonization; 13-state coalition.'},
+      {name:'Argonne National Laboratory',type:'Federal Lab',color:'#3a8fd4',desc:'Electrolysis materials, H2 safety standards, and fuel cell systems R&D; DOE\'s premier H2 research facility.'},
+    ],
+    CCS:[
+      {name:'ADM Decatur CCS Project (IL Corn Belt)',type:'Industry',color:'#e05555',desc:'Archer-Daniels-Midland operating first commercial BECCS facility; 1M ton/year CO₂ from corn ethanol fermentation.'},
+      {name:'Midwest Carbon Express Pipeline',type:'Infrastructure',color:'#8b6cf7',desc:'Summit Carbon Solutions 2,000-mile proposed CO₂ pipeline; links Corn Belt ethanol plants to ND saline aquifers.'},
+    ],
+    SAF:[
+      {name:'LanzaJet Freedom Pines (supply partner)',type:'Industry',color:'#18c98a',desc:'ORD-aligned SAF supply chain; United Airlines HQ at ORD; 100M gallon ATJ-SAF purchase agreement.'},
+      {name:'United Airlines Sustainable Flight Fund',type:'Corporate',color:'#3a8fd4',desc:'$100M fund investing in early-stage SAF startups; ORD operations power the world\'s largest SAF demand signal.'},
+    ],
+    Storage:[
+      {name:'ComEd / Exelon Grid Storage Pilot',type:'Utility',color:'#3a8fd4',desc:'Multiple BESS pilots at substation level; demand charge management and frequency regulation programs.'},
+    ],
+  },
+  'hennepin-mn':{
+    Solar:[
+      {name:'Xcel Energy Solar Rewards',type:'Utility',color:'#e6a82a',desc:'MN\'s largest utility; 100% carbon-free electricity by 2050 commitment; community solar + rooftop incentive programs.'},
+    ],
+    Wind:[
+      {name:'Great Plains Wind Energy Consortium',type:'Industry',color:'#14b8a6',desc:'Multi-state consortium connecting MN wind to IL, WI, and IA load; transmission expansion coordination.'},
+      {name:'MN Department of Commerce Clean Energy Division',type:'State Agency',color:'#18c98a',desc:'Implements MN\'s 100% carbon-free electricity standard (2040); wind siting permits and community benefit rules.'},
+    ],
+    Hydrogen:[
+      {name:'Minnesota H2 Pathways Study (U of MN)',type:'R&D',color:'#8b6cf7',desc:'University of Minnesota energy transition modeling; green ammonia for agriculture and H2 for heavy transport.'},
+    ],
+    CCS:[
+      {name:'Northern Lights CCS Corridor',type:'Infrastructure',color:'#e05555',desc:'Proposed MN-to-ND CO₂ transport pipeline; feasibility study links ethanol plants and power sector emitters.'},
+    ],
+    SAF:[
+      {name:'Delta Air Lines (MSP Hub)',type:'Corporate',color:'#18c98a',desc:'MSP is Delta\'s 4th largest hub; 10-year SAF purchasing framework; partnering with Gevo (Luverne, MN ATJ plant).'},
+      {name:'Gevo (Luverne, MN)',type:'Industry',color:'#e6a82a',desc:'ATJ-SAF production facility; uses MN corn and wind-powered electrolysis; Net-Zero 1 project producing 65M gal/yr SAF.'},
+    ],
+    Storage:[
+      {name:'Xcel Northern States Power BESS Buildout',type:'Utility',color:'#3a8fd4',desc:'1,000 MW+ BESS pipeline for MN load balancing; wind integration storage; virtual peaking program.'},
+    ],
+  },
+  'wake-nc':{
+    Solar:[
+      {name:'Duke Energy Progress NC Solar',type:'Utility',color:'#e6a82a',desc:'Largest utility in the Southeast; 5 GW solar by 2025 in NC; net-zero commitment by 2050.'},
+      {name:'NC Clean Energy Technology Center (NCSU)',type:'R&D',color:'#3a8fd4',desc:'National leader in solar market intelligence (50 States of Solar report); grid integration R&D.'},
+    ],
+    Wind:[
+      {name:'Coastal Wind Coalition NC',type:'Advocacy',color:'#14b8a6',desc:'Coalition pushing for BOEM offshore wind leasing in NC Bight; NC Ports New Bern offshore wind hub plan.'},
+    ],
+    Hydrogen:[
+      {name:'Research Triangle Clean Hydrogen Initiative',type:'Advocacy',color:'#8b6cf7',desc:'RTP-based industry-university consortium; targeting green H2 for semiconductor fab processes and data centers.'},
+    ],
+    CCS:[
+      {name:'Duke Energy Carbon Capture R&D Center',type:'R&D',color:'#e05555',desc:'Pilot post-combustion capture system at Belews Creek; testing solvent and membrane technologies for coal transition.'},
+    ],
+    SAF:[
+      {name:'RDU SAF Working Group',type:'Airport',color:'#18c98a',desc:'RDU airport + American Airlines developing SAF blending infrastructure; targeting 2% blend by 2026.'},
+    ],
+    Storage:[
+      {name:'Duke Energy / Fluence BESS Program',type:'Utility',color:'#3a8fd4',desc:'Multiple grid-scale BESS projects across NC; solar+storage co-location; demand response virtual peaker.'},
+    ],
+  },
+  'denver-co':{
+    Solar:[
+      {name:'Xcel Colorado Solar Gardens Program',type:'Utility',color:'#e6a82a',desc:'Colorado\'s largest community solar program; 200+ MW gardens serving 50,000 LMI subscribers.'},
+      {name:'NREL (National Renewable Energy Laboratory)',type:'Federal Lab',color:'#3a8fd4',desc:'DOE\'s premier clean energy R&D lab; solar cell efficiency world records; 3,000+ researchers in Golden, CO.'},
+    ],
+    Wind:[
+      {name:'Colorado Energy Office — Wind Program',type:'State Agency',color:'#14b8a6',desc:'Facilitates Pawnee Grasslands Wind Energy Area; Wind for Schools program; rural community benefit requirements.'},
+      {name:'Rocky Mountain Wind Energy Center',type:'Developer',color:'#14b8a6',desc:'1,000+ MW CO wind projects under development; Xcel anchor PPA; state\'s highest-productivity wind corridor.'},
+    ],
+    Hydrogen:[
+      {name:'Colorado Green Hydrogen Initiative',type:'Advocacy',color:'#8b6cf7',desc:'State-led consortium; targets H2 for mountain transit (ski resorts), mining equipment, and Xcel gas turbine co-firing.'},
+    ],
+    CCS:[
+      {name:'Colorado Carbon Fund',type:'State Program',color:'#e05555',desc:'CO CDPHE-administered fund; enhanced weathering and soil carbon programs for agricultural land.'},
+    ],
+    SAF:[
+      {name:'Denver International Airport SAF Hub',type:'Airport',color:'#18c98a',desc:'DEN is the 5th busiest U.S. airport; City of Denver targeting 10% SAF blend by 2030; HEFA supply chain from WY.'},
+      {name:'Colorado State SAF Coalition (CAAFI partner)',type:'Advocacy',color:'#e6a82a',desc:'CO feedstock mapping for SAF; covers camelina (dryland crop), forest residue, and municipal waste pathways.'},
+    ],
+    Storage:[
+      {name:'NREL Grid Systems Integration',type:'Federal Lab',color:'#3a8fd4',desc:'Grid modernization and battery storage research; ESIF (Energy Systems Integration Facility) at Golden campus.'},
+      {name:'Xcel Colorado Battery Storage Plan',type:'Utility',color:'#e6a82a',desc:'2 GW BESS by 2030 in Colorado; solar+storage co-location model; Pueblo Solar + Storage facility operational.'},
+    ],
+  },
+  'multnomah-or':{
+    Solar:[
+      {name:'Portland General Electric Clean Grid',type:'Utility',color:'#e6a82a',desc:'PGE commits to 80% carbon-free by 2030; integrating Columbia Gorge wind and E. OR solar into Portland grid.'},
+    ],
+    Wind:[
+      {name:'Columbia Gorge Wind Energy Zone',type:'Developer',color:'#14b8a6',desc:'World-class wind resource shared across OR/WA border; Avangrid, NextEra, Enel operating 4+ GW of turbines.'},
+    ],
+    Hydrogen:[
+      {name:'Port of Portland H2 Maritime Fuel Program',type:'Infrastructure',color:'#8b6cf7',desc:'H2 and green methanol bunkering feasibility study; targeting zero-emission vessel fueling by 2030.'},
+      {name:'Oregon H2 Initiative (OHI)',type:'State Program',color:'#18c98a',desc:'State-led roadmap targeting 5% H2 in natural gas grid by 2035; green H2 for forest product industry.'},
+    ],
+    CCS:[
+      {name:'Oregon Climate Action Program (OCAP)',type:'State Program',color:'#e05555',desc:'Cap-and-invest program generating revenue for CCS and CDR projects; among strictest state climate frameworks.'},
+    ],
+    SAF:[
+      {name:'PDX SAF Integration Project',type:'Airport',color:'#18c98a',desc:'Portland International Airport + Alaska Airlines targeting 5% SAF blend by 2027; PtL R&D partnership with PGE.'},
+    ],
+    Storage:[
+      {name:'Pacific Power BESS + Hydro Coordination',type:'Utility',color:'#3a8fd4',desc:'Optimizing hydro flexibility with BESS to maximize renewable integration; 500 MW storage IRP requirement.'},
+    ],
+  },
+  'bexar-tx':{
+    Solar:[
+      {name:'CPS Energy Flexible Path',type:'Utility',color:'#e6a82a',desc:'San Antonio municipal utility; 50% renewable by 2030, 80% by 2040; operating 800+ MW utility-scale solar.'},
+      {name:'Nexamp San Antonio Community Solar',type:'Developer',color:'#18c98a',desc:'Community solar projects enabling LMI access to solar savings; 150 MW TX pipeline with CPS offtake.'},
+    ],
+    Wind:[
+      {name:'CPS Energy Wind Fleet Expansion',type:'Utility',color:'#14b8a6',desc:'600+ MW existing wind capacity; contracting additional West Texas wind under competitive solicitation.'},
+    ],
+    Hydrogen:[
+      {name:'Southwest Research Institute H2 Testing',type:'R&D',color:'#8b6cf7',desc:'Leading H2 fuel system safety testing for automotive, aerospace, and military applications; DoD contracts.'},
+    ],
+    CCS:[],
+    SAF:[
+      {name:'SAT Airport Clean Fuel Initiative',type:'Airport',color:'#18c98a',desc:'San Antonio Airport + Southwest Airlines SAF supply chain development; regional agricultural waste feedstock.'},
+    ],
+    Storage:[
+      {name:'CPS Energy BESS Procurement',type:'Utility',color:'#3a8fd4',desc:'1,000 MW battery storage solicitation underway; solar+storage hybrid projects at Gemini and Roadrunner sites.'},
+    ],
+  },
+  'washtenaw-mi':{
+    Solar:[
+      {name:'University of Michigan Energy Institute',type:'R&D',color:'#3a8fd4',desc:'Perovskite and building-integrated PV research; grid integration modeling for Michigan\'s clean energy transition.'},
+    ],
+    Wind:[
+      {name:'Michigan Offshore Wind Council',type:'Advocacy',color:'#14b8a6',desc:'Great Lakes offshore wind coalition; Lake Michigan feasibility research; workforce development pipeline.'},
+    ],
+    Hydrogen:[
+      {name:'Ford Motor Company H2 R&D',type:'Industry',color:'#8b6cf7',desc:'Hydrogen fuel cell commercial vehicle program; F-Series H2 work truck development; ACES campus partnerships.'},
+      {name:'GM Hydrotec H2 Division',type:'Industry',color:'#8b6cf7',desc:'ProVia and SURUS platforms; military and commercial H2 fuel cell systems; Milford Proving Ground H2 testing.'},
+      {name:'American Center for Mobility (ACM)',type:'Industry',color:'#3a8fd4',desc:'Autonomous and connected vehicle test facility; H2 fueling infrastructure; DOT-funded certification programs.'},
+    ],
+    CCS:[],
+    SAF:[
+      {name:'Detroit Metro Airport SAF Coalition',type:'Airport',color:'#18c98a',desc:'DTW + Delta + United targeting 3% SAF blend by 2026; Michigan agricultural waste feedstock study underway.'},
+    ],
+    Storage:[
+      {name:'CATL North America (Ann Arbor Office)',type:'Industry',color:'#3a8fd4',desc:'World\'s largest battery maker North American R&D hub; LFP and sodium-ion next-gen chemistry development.'},
+      {name:'Ford Ion Park Battery R&D',type:'Industry',color:'#e6a82a',desc:'$3.5B Marshall, MI LFP battery manufacturing + Washtenaw R&D center; solid-state battery development program.'},
+    ],
+  },
+  'alameda-ca':{
+    Solar:[
+      {name:'East Bay Community Energy (EBCE)',type:'Utility/CCA',color:'#e6a82a',desc:'One of the largest CCAs in the U.S.; 100% renewable energy product; leads equity solar programs across Alameda County.'},
+      {name:'Lawrence Berkeley National Laboratory',type:'Federal Lab',color:'#3a8fd4',desc:'DOE lab; Cyclotron Road cleantech program; grid integration, perovskite solar, and energy efficiency R&D.'},
+    ],
+    Wind:[
+      {name:'Port of Oakland Wind + Clean Shipping Hub',type:'Infrastructure',color:'#14b8a6',desc:'Port electrification mandate; shore power for all vessels; offshore wind supply chain O&M base planned.'},
+    ],
+    Hydrogen:[
+      {name:'Port of Oakland H2 Bunkering Feasibility',type:'Infrastructure',color:'#8b6cf7',desc:'Developing green methanol and H2 bunkering; aligning with International Maritime Organization 2050 zero-GHG goals.'},
+    ],
+    CCS:[
+      {name:'Lawrence Berkeley ARPA-E CDR Projects',type:'Federal Lab',color:'#e05555',desc:'LBNL leads ocean alkalinity enhancement and enhanced weathering field trials; DOE ARPA-E funded.'},
+    ],
+    SAF:[
+      {name:'OAK Airport SAF Adoption Plan',type:'Airport',color:'#18c98a',desc:'Oakland Airport + Southwest Airlines developing SAF blending; Bay Area Biofuels Network feedstock mapping.'},
+    ],
+    Storage:[
+      {name:'Fluence / Siemens Bay Area BESS Cluster',type:'Developer',color:'#3a8fd4',desc:'15+ operational BESS projects in Alameda County; Duck Curve arbitrage and Resource Adequacy compliance.'},
+      {name:'LBNL Grid Energy Storage Research',type:'Federal Lab',color:'#e6a82a',desc:'Flow battery chemistry, grid-scale safety protocols, and second-life EV battery repurposing research.'},
+    ],
+  },
+};
+
+/* ===================== POLICIES ===================== */
+const POLICIES = {
+  Federal:[
+    {
+      id:'ira-itc',name:'Extend & Expand IRA Investment Tax Credits',
+      impact:32,
+      desc:'Preserve and expand 30-70% ITCs under the Inflation Reduction Act (§48, §48C, §48E). Critical for utility-scale solar, storage, and clean manufacturing. Bonus credits for energy communities and domestic content.',
+      status:'Active',difficulty:'Low',sectors:['Solar','Storage','Hydrogen','CCS'],
+      authority:'Congress / Treasury / IRS',
+    },
+    {
+      id:'45q-capture',name:'Increase & Simplify 45Q CCS Tax Credit',
+      impact:28,
+      desc:'Raise the 45Q credit from $85/ton to $180/ton for saline aquifer storage; streamline direct-pay provisions for non-profits and municipalities; expand to point-source industrial emitters below 25,000 ton/yr threshold.',
+      status:'Proposed',difficulty:'Med',sectors:['CCS'],
+      authority:'Congress / Treasury',
+    },
+    {
+      id:'45v-hydrogen',name:'Lock 45V Clean Hydrogen Production Credit',
+      impact:30,
+      desc:'Finalize 45V rules with flexible additionality, deliverability, and time-matching standards. Provide clear pathway for electrolytic, natural gas + CCS, and biomass-based hydrogen to claim $3/kg credit.',
+      status:'Active (rule-making)',difficulty:'Med',sectors:['Hydrogen'],
+      authority:'Treasury / IRS / DOE',
+    },
+    {
+      id:'45z-saf',name:'Strengthen 45Z Clean Fuels Production Credit',
+      impact:25,
+      desc:'Extend 45Z SAF credit beyond 2027 through 2035 with increasing CI thresholds. Expand eligible feedstocks and certify additional LCA pathways (municipal solid waste, algae, camelina). Align with CORSIA methodology.',
+      status:'Active (2025-2027)',difficulty:'Med',sectors:['SAF','Biofuels'],
+      authority:'Treasury / FAA / EPA',
+    },
+    {
+      id:'doe-h2-hubs',name:'Fund & Accelerate DOE H2 Hub Programs',
+      impact:27,
+      desc:'Release full $8B DOE Regional Clean Hydrogen Hub funding; add 3 additional hubs targeting maritime ports and agricultural regions. Expedite environmental reviews under NEPA categorical exclusions.',
+      status:'Active (disbursing)',difficulty:'Low',sectors:['Hydrogen'],
+      authority:'DOE / Congress',
+    },
+    {
+      id:'offshore-wind-permitting',name:'Streamline Offshore Wind Federal Permitting',
+      impact:24,
+      desc:'Codify One-Stop-Shop for offshore wind: consolidate BOEM, USACE, USFWS, and FERC reviews into a 2-year maximum permitting timeline. Create dedicated transmission corridors and port modernization grants.',
+      status:'Proposed',difficulty:'High',sectors:['Wind'],
+      authority:'BOEM / FERC / Congress',
+    },
+    {
+      id:'dac-demonstrations',name:'Scale DAC Grand Challenge to $5B',
+      impact:22,
+      desc:'Expand DOE\'s Direct Air Capture Earthshots program from $3.5B to $5B; prioritize commercial-scale demonstration projects (>10,000 t/year) in counties with high solar or wind resources; mandate community benefit agreements.',
+      status:'Proposed',difficulty:'Med',sectors:['CCS'],
+      authority:'DOE / Congress',
+    },
+    {
+      id:'buy-clean',name:'Expand Buy Clean Federal Procurement',
+      impact:18,
+      desc:'Extend Buy Clean requirements to all major federal construction and infrastructure contracts; set embodied carbon limits for steel, concrete, glass, and asphalt; create an open federal EPD database for low-carbon materials.',
+      status:'Active (pilot)',difficulty:'Med',sectors:['Solar','Storage','Wind'],
+      authority:'GSA / OMB / DOD',
+    },
+    {
+      id:'faa-saf-grand',name:'FAA SAF Grand Challenge (10B gal by 2030)',
+      impact:21,
+      desc:'Fully fund FAA SAF Grand Challenge through airport infrastructure grants, HEFA blending mandate for federal aviation, and DOT/DOE feedstock development support. Mandate 5% SAF at Top-25 U.S. airports by 2028.',
+      status:'Active',difficulty:'Med',sectors:['SAF'],
+      authority:'FAA / DOT / DOE',
+    },
+    {
+      id:'lpo-clean',name:'Scale DOE Loan Programs Office (LPO)',
+      impact:19,
+      desc:'Increase LPO loan authority for Title 17 clean energy loans; reduce application burden for counties under 500,000 population; launch dedicated credit facility for first-of-kind energy storage and hydrogen projects.',
+      status:'Active',difficulty:'Low',sectors:['Storage','Hydrogen','CCS','Solar','Wind'],
+      authority:'DOE / OMB',
+    },
+  ],
+  State:[
+    {
+      id:'rps-100',name:'100% Clean Electricity Standard (CES)',
+      impact:35,
+      desc:'Enact or strengthen state Renewable Portfolio Standards to require 100% carbon-free electricity by 2040 or earlier. Include interim benchmarks (50% by 2030, 80% by 2035). Authorize storage as an eligible compliance measure.',
+      status:'Varies by state',difficulty:'High',sectors:['Solar','Wind','Storage','Hydrogen'],
+      authority:'State Legislature / PUC',
+    },
+    {
+      id:'pace-commercial',name:'Commercial PACE Financing Programs',
+      impact:22,
+      desc:'Authorize and expand Commercial Property Assessed Clean Energy (CPACE) financing for solar, storage, and efficiency upgrades. Streamline underwriting standards; create state PACE authority for multi-family housing.',
+      status:'Active in 38 states',difficulty:'Low',sectors:['Solar','Storage'],
+      authority:'State Legislature / Municipal',
+    },
+    {
+      id:'state-h2-roadmap',name:'State Green Hydrogen Roadmaps + Incentives',
+      impact:26,
+      desc:'Develop enforceable state H2 roadmaps with procurement targets for transit, ferries, and state vehicle fleets. Create H2 enterprise zones with property tax exemptions. Align port authorities with maritime H2 bunkering mandates.',
+      status:'10 states active',difficulty:'Med',sectors:['Hydrogen'],
+      authority:'State Energy Office / Legislature',
+    },
+    {
+      id:'clean-fuels-std',name:'Clean Fuels Standard (Low Carbon Fuel Standard)',
+      impact:24,
+      desc:'Adopt Oregon/California-style LCFS crediting SAF, renewable diesel, and biogas. Set declining carbon intensity benchmarks; credit revenue cross-subsidizes LMI electric vehicle and transit electrification programs.',
+      status:'Active: CA, OR, WA, CO',difficulty:'High',sectors:['SAF','Biofuels','Hydrogen'],
+      authority:'State EPA / Air Board',
+    },
+    {
+      id:'beps',name:'Building Energy Performance Standards (BEPS)',
+      impact:19,
+      desc:'Mandate energy performance benchmarking and carbon intensity limits for commercial buildings >50,000 sq ft. Create compliance pathways via on-site solar, storage, heat pumps, and grid-flexible load management.',
+      status:'Adopted: DC, CO, MA, WA, NY',difficulty:'Med',sectors:['Solar','Storage'],
+      authority:'State/Local Building Code Authority',
+    },
+    {
+      id:'community-solar',name:'Expand Community Solar Access for LMI',
+      impact:20,
+      desc:'Mandate that 40-60% of community solar capacity serves low-to-moderate income subscribers at minimum 15% bill discount. Create automatic enrollment options through SNAP and LIHEAP programs.',
+      status:'Varies widely',difficulty:'Med',sectors:['Solar'],
+      authority:'State PUC / Legislature',
+    },
+    {
+      id:'offshore-wind-port',name:'State Offshore Wind Port & Supply Chain Fund',
+      impact:23,
+      desc:'Create dedicated state offshore wind port improvement fund ($100M-$1B depending on state); mandate local content requirements for port fabrication; develop offshore wind workforce training at community colleges.',
+      status:'Active: MA, NY, NJ, CT',difficulty:'Med',sectors:['Wind'],
+      authority:'State Legislature / Port Authority',
+    },
+    {
+      id:'state-ccs-storage',name:'State CO₂ Storage Regulatory Framework',
+      impact:17,
+      desc:'Enact UIC Class VI well permitting primacy (rather than federal EPA delegation); establish liability caps and post-closure trust funds; streamline geological surveys for saline aquifer storage siting.',
+      status:'Active: WY, ND, WV, LA',difficulty:'High',sectors:['CCS'],
+      authority:'State EPA / Geological Survey',
+    },
+    {
+      id:'clean-manufacturing',name:'Clean Manufacturing Enterprise Zones',
+      impact:21,
+      desc:'Designate counties with idle industrial land as Clean Manufacturing Zones with 10-year property tax abatements for solar panel, battery, electrolyzer, and wind turbine manufacturing. Link to state workforce development funds.',
+      status:'Emerging',difficulty:'Med',sectors:['Solar','Storage','Wind','Hydrogen'],
+      authority:'State Commerce / Legislature',
+    },
+  ],
+  Local:[
+    {
+      id:'solar-zoning',name:'Solar-Ready Zoning & Streamlined Permitting',
+      impact:18,
+      desc:'Adopt solar-ready building codes for all new construction; standardize residential solar permit to 24-hour online approval under <$500 fee; prohibit HOA solar restrictions; establish pre-approved structural and electrical standards.',
+      status:'Active in 50+ cities',difficulty:'Low',sectors:['Solar'],
+      authority:'City/County Building & Planning',
+    },
+    {
+      id:'muni-green-bonds',name:'Municipal Green Bond Issuance',
+      impact:20,
+      desc:'Issue tax-exempt municipal green bonds to finance solar installations on public facilities, municipal vehicle electrification, and grid-scale BESS. Require third-party green bond certification and annual impact reporting.',
+      status:'Active in 200+ jurisdictions',difficulty:'Low',sectors:['Solar','Storage','Wind'],
+      authority:'City/County Finance',
+    },
+    {
+      id:'local-cba',name:'Community Benefit Agreements for Clean Energy Projects',
+      impact:16,
+      desc:'Require binding Community Benefit Agreements (CBAs) for all clean energy projects receiving county permits or incentives: local hiring minimums, air quality monitoring, property value guarantees, and community investment funds.',
+      status:'Emerging best practice',difficulty:'Med',sectors:['Solar','Wind','CCS','Hydrogen'],
+      authority:'City/County Council',
+    },
+    {
+      id:'port-electrification',name:'Port & Airport Electrification Mandates',
+      impact:22,
+      desc:'Mandate shore power for all vessels at county-operated ports by 2028; require 100% electric ground service equipment at county airports by 2030. Create harbor craft replacement grants for fishing and ferry operators.',
+      status:'Active: Oakland, Seattle, LA',difficulty:'Med',sectors:['Hydrogen','Storage'],
+      authority:'Port Authority / Airport Commission',
+    },
+    {
+      id:'county-procurement',name:'County Clean Energy Procurement Target',
+      impact:19,
+      desc:'Commit all county operations to 100% renewable electricity by 2030; electrify county vehicle fleet by 2035; install solar + EV charging at all county facilities; establish revolving clean energy fund from utility savings.',
+      status:'Active in 200+ counties',difficulty:'Low',sectors:['Solar','Storage','Wind'],
+      authority:'County Executive / Board of Supervisors',
+    },
+    {
+      id:'ev-charging-infra',name:'Public EV Charging Infrastructure Investment',
+      impact:17,
+      desc:'Fund Level 2 and DC Fast Charging at all county parking facilities, transit stations, and parks; require EV-ready conduit in all new commercial construction; establish equity-focused charging deserts program for LMI areas.',
+      status:'Active',difficulty:'Low',sectors:['Storage','Hydrogen'],
+      authority:'City/County Transportation',
+    },
+    {
+      id:'local-ccs-plan',name:'Industrial Decarbonization District Plan',
+      impact:14,
+      desc:'Designate heavy-industrial areas as Decarbonization Districts; offer property tax incentives for CCS retrofits; partner with state EPA on streamlined permit coordination; connect to state CO₂ transport pipeline siting.',
+      status:'Pilot stage',difficulty:'High',sectors:['CCS'],
+      authority:'City/County Economic Development',
+    },
+    {
+      id:'local-h2-fleet',name:'County H2 Transit & Fleet Demonstration',
+      impact:15,
+      desc:'Pilot hydrogen fuel cell buses or refuse trucks in county transit fleet (minimum 5-unit demonstration); partner with regional H2 Hub for fueling infrastructure; report TCO and lifecycle emissions data publicly.',
+      status:'Active: LA, Oakland, Chicago',difficulty:'Med',sectors:['Hydrogen'],
+      authority:'County Transit / Public Works',
+    },
+    {
+      id:'saf-airport-mandate',name:'Airport SAF Blending Requirement',
+      impact:16,
+      desc:'Require county-operated or county-leased airports to blend minimum 5% SAF in all fuel purchased by 2028, scaling to 20% by 2035. Offer fueling infrastructure grants; establish feedstock supply chain working group with regional agriculture.',
+      status:'Active: Denver, Portland, Oakland',difficulty:'Med',sectors:['SAF'],
+      authority:'Airport Authority / County',
+    },
+    {
+      id:'storage-zoning',name:'Grid Storage Siting Fast-Track',
+      impact:13,
+      desc:'Create by-right permitting for co-located solar+storage projects under 20 MW; establish streamlined variance process for standalone BESS; adopt NFPA 855 fire standards with pre-approved site configurations.',
+      status:'Emerging',difficulty:'Low',sectors:['Storage','Solar'],
+      authority:'City/County Planning / Fire Marshal',
+    },
+  ],
+};
+
+/* ===================== STATE ===================== */
+let curCounty = COUNTIES[0];
+let curSector = 'Solar';
+let activePolicies = new Set();
+let techChart = null, radarChart = null;
+
+/* ===================== INIT ===================== */
+function init(){
+  buildCountyGrid();
+  buildSectorTabs();
+  render();
+}
+
+function buildCountyGrid(){
+  const g = document.getElementById('county-grid');
+  COUNTIES.forEach(c=>{
+    const btn = document.createElement('div');
+    btn.className = 'cty-btn' + (c.id===curCounty.id?' on':'');
+    btn.innerHTML = `<span class="cty-name">${c.name}</span><span class="cty-state">${c.state} · ${c.city}</span><span class="cty-tag" style="background:${c.color}22;border:1px solid ${c.color}44;"></span>`;
+    btn.onclick = ()=>{
+      curCounty = c;
+      activePolicies.clear();
+      document.querySelectorAll('.cty-btn').forEach((b,i)=>{
+        b.classList.toggle('on', COUNTIES[i].id===c.id);
+      });
+      render();
+    };
+    g.appendChild(btn);
+  });
+}
+
+function buildSectorTabs(){
+  const r = document.getElementById('sec-row');
+  Object.keys(SECTORS).forEach(sk=>{
+    const btn = document.createElement('button');
+    btn.className = 'sec-btn' + (sk===curSector?' on':'');
+    btn.textContent = SECTORS[sk].label;
+    if(sk===curSector){ btn.style.background=SECTORS[sk].color; btn.style.borderColor=SECTORS[sk].color; }
+    btn.onclick = ()=>{
+      curSector = sk;
+      activePolicies.clear();
+      document.querySelectorAll('.sec-btn').forEach((b,i)=>{
+        const s2=Object.keys(SECTORS)[i];
+        const on=s2===sk;
+        b.classList.toggle('on',on);
+        b.style.background=on?SECTORS[s2].color:'';
+        b.style.borderColor=on?SECTORS[s2].color:'';
+      });
+      render();
+    };
+    r.appendChild(btn);
+  });
+}
+
+/* ===================== RENDER ===================== */
+function render(){
+  renderInfoBand();
+  renderMainGrid();
+  renderPolicies();
+  updateImpact();
+}
+
+function renderInfoBand(){
+  const el = document.getElementById('info-band');
+  const S = SECTORS[curSector];
+  el.className = 'info-band anim';
+  el.innerHTML = `
+    <div>
+      <div class="ib-name">${curCounty.name} County, ${curCounty.state} <span style="color:${S.color};font-size:12px;font-weight:400;">· ${S.label}</span></div>
+      <div class="ib-desc">${curCounty.desc}</div>
+    </div>
+    <div class="ib-stats">
+      <div class="ib-stat"><div class="ib-sl">Population</div><div class="ib-sv">${curCounty.pop}</div></div>
+      <div class="ib-stat"><div class="ib-sl">County GDP</div><div class="ib-sv">${curCounty.gdp}</div></div>
+      <div class="ib-stat"><div class="ib-sl">Clean Energy Jobs</div><div class="ib-sv">${curCounty.jobs}</div></div>
+    </div>`;
+}
+
+function renderMainGrid(){
+  const el = document.getElementById('main-grid');
+  el.innerHTML = '';
+  el.className = 'main-grid anim';
+
+  // Card 1: Tech prevalence
+  const techCard = document.createElement('div');
+  techCard.className = 'card';
+  techCard.innerHTML = `<div class="card-label">Technology Prevalence</div><div id="tech-content"></div>`;
+  el.appendChild(techCard);
+
+  // Card 2: Networks
+  const netCard = document.createElement('div');
+  netCard.className = 'card';
+  const nets = (NETWORKS[curCounty.id]||{})[curSector]||[];
+  const netsHtml = nets.length ? nets.map(n=>`
+    <div class="net-item">
+      <div class="net-dot" style="background:${n.color}"></div>
+      <div>
+        <div class="net-name">${n.name}</div>
+        <div class="net-desc">${n.desc}</div>
+        <span class="net-type" style="background:${n.color}18;color:${n.color};">${n.type}</span>
+      </div>
+    </div>`).join('') : `<div style="color:var(--text3);font-size:12px;padding:20px 0;text-align:center;">No major networks currently mapped<br>for this county × sector combination.</div>`;
+  netCard.innerHTML = `<div class="card-label">Active Networks & Institutions</div><div>${netsHtml}</div>`;
+  el.appendChild(netCard);
+
+  // Card 3: Radar
+  const radarCard = document.createElement('div');
+  radarCard.className = 'card';
+  radarCard.innerHTML = `<div class="card-label">County Innovation Dimensions</div><div class="radar-wrap"><canvas id="radar-canvas"></canvas></div>`;
+  el.appendChild(radarCard);
+
+  // Render tech bars
+  const S = SECTORS[curSector];
+  const tc = document.getElementById('tech-content');
+  tc.innerHTML = S.tech.map(t=>`
+    <div class="tech-item">
+      <div class="tech-row">
+        <span class="tech-name">${t.name}</span>
+        <span class="tech-pct">${t.pct}%</span>
+      </div>
+      <div class="tech-bar-bg"><div class="tech-bar-fill" style="width:${t.pct}%;background:${S.color};opacity:${0.4+t.pct/165};"></div></div>
+      <div class="tech-org">${t.orgs}</div>
+    </div>`).join('');
+
+  // Render radar
+  setTimeout(()=>{
+    const ctx = document.getElementById('radar-canvas');
+    if(!ctx) return;
+    if(radarChart) radarChart.destroy();
+    const col = S.color;
+    const seed = Array.from(curCounty.id).reduce((a,c)=>a+c.charCodeAt(0),0);
+    const dims = ['R&D Density','Policy Env','Network Density','Infra Readiness','Talent Pool','Private Capital'];
+    const base = dims.map((_,i)=>40+((seed*(i+3)*17)%45));
+    const natl = base.map(v=>Math.round(v*0.6));
+    radarChart = new Chart(ctx,{
+      type:'radar',
+      data:{
+        labels:dims,
+        datasets:[
+          {label:'This County',data:base,backgroundColor:col+'22',borderColor:col,borderWidth:1.5,pointBackgroundColor:col,pointRadius:3},
+          {label:'National Avg',data:natl,backgroundColor:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.18)',borderWidth:1,borderDash:[3,3],pointRadius:2,pointBackgroundColor:'rgba(255,255,255,0.3)'}
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},color:'#3e5a72',boxWidth:8,padding:8}}},
+        scales:{r:{min:0,max:100,grid:{color:'rgba(255,255,255,0.05)'},angleLines:{color:'rgba(255,255,255,0.05)'},pointLabels:{font:{size:9.5},color:'#7a98b3'},ticks:{display:false,backdropColor:'transparent'}}}
+      }
+    });
+  },50);
+}
+
+function renderPolicies(){
+  const el = document.getElementById('policy-section');
+  el.innerHTML = '';
+  el.className = 'anim';
+
+  const tiers = [
+    {key:'Federal',label:'Federal Government',badge:'Federal',bc:'#3a8fd4',color:SECTORS[curSector].color},
+    {key:'State',label:'State Government',badge:'State / Regional',bc:'#8b6cf7',color:SECTORS[curSector].color},
+    {key:'Local',label:'Local & Municipal',badge:'County / City',bc:'#18c98a',color:SECTORS[curSector].color},
+  ];
+
+  tiers.forEach(tier=>{
+    const relevant = POLICIES[tier.key].filter(p=>p.sectors.includes(curSector));
+    if(!relevant.length) return;
+
+    const section = document.createElement('div');
+    section.innerHTML = `<hr><div class="pol-tier-hdr">
+      <div class="pol-tier-label">${tier.label}</div>
+      <span class="pol-tier-badge" style="background:${tier.bc}18;color:${tier.bc};border:0.5px solid ${tier.bc}44;">${tier.badge}</span>
+    </div>`;
+
+    const grid = document.createElement('div');
+    grid.className = 'pol-grid';
+
+    relevant.forEach(p=>{
+      const on = activePolicies.has(p.id);
+      const diffColor = p.difficulty==='Low'?'var(--green)':p.difficulty==='Med'?'var(--amber)':'var(--red)';
+      const diffBg = p.difficulty==='Low'?'var(--green-dim)':p.difficulty==='Med'?'var(--amber-dim)':'var(--red-dim)';
+      const statusColor = p.status==='Active'||p.status.startsWith('Active')?'var(--green)':'var(--amber)';
+      const statusBg = p.status==='Active'||p.status.startsWith('Active')?'var(--green-dim)':'var(--amber-dim)';
+
+      const card = document.createElement('div');
+      card.className = 'pol-card' + (on?' on':'');
+      if(on){ card.style.borderColor=SECTORS[curSector].color; card.style.color=SECTORS[curSector].color; }
+      card.innerHTML = `
+        <div class="check-indicator"><span class="check-mark">✓</span></div>
+        <div class="pol-card-top" style="padding-right:20px;">
+          <div class="pol-card-name">${p.name}</div>
+          <div class="pol-card-impact" style="color:${SECTORS[curSector].color};white-space:nowrap;margin-left:8px;">+${p.impact}</div>
+        </div>
+        <div class="pol-card-desc">${p.desc}</div>
+        <div class="pol-card-meta">
+          <span class="pol-tag" style="background:${statusBg};color:${statusColor};">${p.status}</span>
+          <span class="pol-diff" style="background:${diffBg};color:${diffColor};">${p.difficulty} lift</span>
+          <span class="pol-tag" style="background:rgba(122,152,179,0.08);color:var(--text3);">${p.authority}</span>
+        </div>`;
+
+      card.onclick = ()=>{
+        if(activePolicies.has(p.id)) activePolicies.delete(p.id);
+        else activePolicies.add(p.id);
+        renderPolicies();
+        updateImpact();
+      };
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    el.appendChild(section);
+  });
+}
+
+function updateImpact(){
+  const allPolicies = [...POLICIES.Federal,...POLICIES.State,...POLICIES.Local];
+  let total=0, details=[], byTier={Federal:0,State:0,Local:0};
+  allPolicies.forEach(p=>{
+    if(activePolicies.has(p.id)){
+      total+=p.impact;
+      details.push(p.name);
+      const tier = POLICIES.Federal.includes(p)?'Federal':POLICIES.State.includes(p)?'State':'Local';
+      byTier[tier]+=p.impact;
+    }
+  });
+  const capped = Math.min(100,Math.round(total*0.6));
+  const scoreEl = document.getElementById('i-score');
+  scoreEl.textContent = capped+' / 100';
+  scoreEl.style.color = capped>=70?'var(--green)':capped>=40?'var(--amber)':'var(--text2)';
+  const bar = document.getElementById('i-bar');
+  bar.style.width = capped+'%';
+  bar.style.background = capped>=70?'var(--green)':capped>=40?'var(--amber)':'var(--blue)';
+  const det = document.getElementById('i-detail');
+  if(!details.length){
+    det.innerHTML = '<span class="ibd">Select policy levers above to model combined 5-year innovation impact.</span>';
+  } else {
+    const parts = [];
+    if(byTier.Federal) parts.push(`<span class="ibd">Federal: <span>+${byTier.Federal} pts</span></span>`);
+    if(byTier.State)   parts.push(`<span class="ibd">State: <span>+${byTier.State} pts</span></span>`);
+    if(byTier.Local)   parts.push(`<span class="ibd">Local: <span>+${byTier.Local} pts</span></span>`);
+    parts.push(`<span class="ibd">${details.length} lever${details.length>1?'s':''} selected</span>`);
+    det.innerHTML = parts.join('<span style="color:var(--text3);margin:0 4px;">·</span>');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
