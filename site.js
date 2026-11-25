@@ -1,163 +1,161 @@
 /* =========================================================
-   ENVIRA: SITE SETTINGS (edit once, every page updates)
+   ENVIRA: SITE SETTINGS
+   Edit this block once and every page updates.
    ========================================================= */
 const ENVIRA = {
-  email: 'contact@envira.org',
+  email: 'contact@envira.org',            // main contact email
   partnershipsEmail: 'partnerships@envira.org',
-  linkedin: '', instagram: '', youtube: '', github: '',
-  applyLink: '',            // Google Form for ambassadors (blank = email)
-  /* Home page opening: paste a YouTube video ID to play your own drone footage
-     in place of the photo descent. https://www.youtube.com/watch?v=AbC123 -> 'AbC123' */
+  linkedin: '',                            // e.g. 'https://www.linkedin.com/company/envira'
+  instagram: '',                           // e.g. 'https://www.instagram.com/envira'
+  youtube: '',                             // channel link
+  github: '',                              // e.g. 'https://github.com/yourname'
+  applyLink: '',                           // Google Form link for ambassadors (blank = email)
+
+  /* HOME PAGE INTRO VIDEO
+     Paste the ID of a YouTube video to replace the animated intro.
+     For https://www.youtube.com/watch?v=AbC123xYz the ID is 'AbC123xYz'.
+     Leave '' to use the built-in animated drone dive. */
   introYouTubeId: ''
 };
 
 /* =========================================================
-   PHOTO LIBRARY. All from Wikimedia Commons, used under their licenses and
-   credited automatically in captions and the footer. Images load straight from Commons.
-   To use your own photo, replace `file` with a local path like 'images/schools/x.jpg'.
+   LANDSCAPE PHOTOS (Wikimedia Commons, loaded straight from Commons)
+   Each is credited in the footer.
    ========================================================= */
+const COMMONS = name => 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(name) + '?width=1920';
 const PHOTOS = {
-  delta:      { file: 'Meghna River sediment in the Bay of Bengal (MODIS 2019-11-24).jpg', by: 'NASA MODIS Land Rapid Response Team', lic: 'Public domain', cap: 'The Ganges–Brahmaputra delta from orbit', place: 'Bay of Bengal, Nov 2019' },
-  paddyAir:   { file: 'Gajan, Burdwan, West Bengal, (IMG 7747).jpg', by: 'Sammya Brata', lic: 'CC BY-SA 4.0', cap: 'Paddy fields from above', place: 'Bardhaman, West Bengal' },
-  village:    { file: 'Villages in Sundarban, South 24 Parganas 08.jpg', by: 'Pinakpani', lic: 'CC BY-SA 4.0', cap: 'A river village in the Sundarbans', place: 'South 24 Parganas' },
-  village2:   { file: 'Villages in Sundarban, South 24 Parganas 04.jpg', by: 'Pinakpani', lic: 'CC BY-SA 4.0', cap: 'Thatched house on an embankment road', place: 'South 24 Parganas' },
-  girls:      { file: 'Woman and Girl - Sukumari Village - Sundarban District - South of Kolkata - India (12346555163).jpg', by: 'Adam Jones', lic: 'CC BY-SA 2.0', cap: 'A woman and girl in Sukumari village', place: 'Sundarbans, West Bengal' },
-  harvest:    { file: 'Field work (23613626326).jpg', by: 'juggadery', lic: 'CC BY-SA 2.0', cap: 'Harvesting rice', place: 'Satjelia island, Sundarbans' },
-  plough:     { file: 'Ploughing with cattle in West Bengal.jpg', by: 'ILRI', lic: 'CC BY 2.0', cap: 'Ploughing with oxen', place: 'Kadmati village, West Bengal' },
-  sunset:     { file: 'End of Winter. New plantation. Paddy field. Sunset (16527970625).jpg', by: 'Abhijit Kar Gupta', lic: 'CC BY 2.0', cap: 'New paddy at the end of winter', place: 'Ruppur, Nadia district' },
-  flowers:    { file: 'Ride Paddy with Flowers - Sukumari Village - Sundarban District - South of Kolkata - India (12346868533).jpg', by: 'Adam Jones', lic: 'CC BY-SA 2.0', cap: 'Ripe paddy', place: 'Sukumari village, Sundarbans' },
-  otters:     { file: 'Otter Fishermen Harbaria Sundarban NP Bangladesh banner.jpg', by: 'Hiroki Ogawa', lic: 'CC BY-SA 3.0', cap: 'Fishing in the mangrove channels', place: 'Sundarbans, Bangladesh side of the shared delta' },
-  tigerRes:   { file: 'Sunderbans Tiger reserve india David Raju (6).jpg', by: 'David V. Raju', lic: 'CC BY-SA 4.0', cap: 'Working the mudflats', place: 'Sundarban Tiger Reserve, India' },
-  jute:       { file: 'A jute farmer in the flooded fields of West Bengal.jpg', by: 'Shafi fotumcatcher', lic: 'CC BY-SA 4.0', cap: 'A jute farmer in flooded fields', place: 'West Bengal' },
-  flood:      { file: 'Kalinagar Floods B.JPG', by: 'Soumyasch', lic: 'CC BY-SA 3.0', cap: 'Monsoon floodwater that stays for weeks', place: 'Kalinagar, West Bengal' },
-  pond:       { file: 'A pond and its green surrounding.jpg', by: 'Billjones94', lic: 'CC BY-SA 4.0', cap: 'A village pond', place: 'West Bengal' },
-  monsoon:    { file: 'Sundarban Landscape during monsoon 17.jpg', by: 'Kingshuk Mondal', lic: 'CC BY 4.0', cap: 'Monsoon over the Sundarbans', place: 'Sundarbans, West Bengal' },
-  rain:       { file: 'India - Kolkata rainy street - 3811.jpg', by: 'Jorge Royan', lic: 'CC BY-SA 3.0', cap: 'A rainy evening in the city', place: 'Kolkata' },
-  amphan:     { file: 'Post Cyclone Amphan situation of Shyambazar in Kolkata 04.jpg', by: 'Indrajit Das', lic: 'CC BY-SA 4.0', cap: 'The morning after Cyclone Amphan, May 2020', place: 'Shyambazar, Kolkata' },
-  hooghly:    { file: 'Hooghly river from Princep Ghat during sunset, Kolkata 01.jpg', by: 'Slyronit', lic: 'CC BY-SA 4.0', cap: 'The Hooghly at sunset', place: 'Prinsep Ghat, Kolkata' },
-  skyline:    { file: 'Kolkata Skyline From Vidyasagar Seti 2.jpg', by: 'Innocentbunny', lic: 'CC BY-SA 3.0', cap: 'Kolkata from Vidyasagar Setu', place: 'Kolkata' },
-  ghats:      { file: 'The ghats of the Hooghly River in Kolkata, India.jpg', by: 'Vyacheslav Argenberg', lic: 'CC BY 4.0', cap: 'The ghats of the Hooghly', place: 'Kolkata' },
-  schoolgirls:{ file: 'Village girls West Bengal.JPG', by: 'Ilya Mauter', lic: 'CC BY 3.0', cap: 'Girls on the way home', place: 'Navadwip, West Bengal' },
-  townhall:   { file: 'Mt. Kisco Village Hall October 2013.jpg', by: 'Chris Pruitt', lic: 'CC BY-SA 3.0', cap: 'A village hall in Westchester County', place: 'Mount Kisco, New York' }
+  satellite: { file: 'Sundarbans.jpg', credit: 'NASA Earth Observatory (Landsat 7)', what: 'Sundarbans & Gangetic delta from orbit' },
+  paddyKolkata: { file: 'Paddy_fields_on_the_outskirts_of_Kolkata.jpg', credit: 'Dr. Asim Kumar Chowdhury', what: 'Paddy fields outside Kolkata' },
+  sundarbanVillage: { file: 'Villages_in_Sundarban,_South_24_Parganas_08.jpg', credit: 'Pinakpani', what: 'Village in the Sundarbans, South 24 Parganas' },
+  bongaPaddy: { file: 'Bonga_paddy_feilds.jpg', credit: 'Supriyo2178', what: 'Paddy fields near Bongaon' }
 };
-const isLocal = f => /^(images\/|\.\/)/.test(f);
-const src = (k, w = 2000) => { const f = PHOTOS[k].file; return isLocal(f) ? f : 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(f) + '?width=' + w; };
-const pageOf = k => 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(PHOTOS[k].file.replace(/ /g, '_'));
+const photoURL = key => COMMONS(PHOTOS[key].file);
 
 (function () {
-  const page = document.body.dataset.page;
-  const apply = ENVIRA.applyLink || 'mailto:' + ENVIRA.email + '?subject=Envira%20Ambassador%20Application';
-  const nav = [['research.html', 'Research & Policy', 'research'], ['education.html', 'Education', 'education'], ['join.html', 'Join', 'join']];
+  const page = document.body.dataset.page || '';
+  const links = [
+    ['index.html', 'Home', 'home'],
+    ['research.html', 'Research & Policy', 'research'],
+    ['education.html', 'Education', 'education'],
+    ['join.html', 'Join Us', 'join']
+  ];
+  const apply = ENVIRA.applyLink || ('mailto:' + ENVIRA.email + '?subject=Envira%20Ambassador%20Application');
+  const logo = (cls = '') => `<a class="logo ${cls}" href="index.html"><img src="images/logo-dark-mark.png" alt="Envira logo"><span class="word">ENVIRA</span><span class="div"></span><span class="sub">Research · Policy<br>Education</span></a>`;
 
-  /* masthead */
-  const mast = document.createElement('header');
-  mast.className = 'mast';
-  mast.innerHTML = `<div class="mast-in">
-      <a class="word" href="index.html"><img src="images/logo-light-mark.png" alt="">Envira</a>
-      <span class="mono issue">Field Report · Kolkata — Sundarbans — Westchester</span>
-      <nav class="mono">${nav.map(([h, t, k]) => `<a href="${h}" ${k === page ? 'aria-current="page"' : ''}>${t}</a>`).join('')}<a class="apply" href="${apply}">Apply ↗</a></nav>
-      <button class="menu-btn mono" aria-label="Open menu">Menu</button>
-    </div>`;
-  document.body.prepend(mast);
-  const sheet = document.createElement('div');
-  sheet.className = 'sheet';
-  sheet.innerHTML = `<header><span class="word">Envira</span><button class="mono">Close</button></header>
-    <nav><a href="index.html"><span>00</span>Home</a>${nav.map(([h, t], i) => `<a href="${h}"><span>0${i + 1}</span>${t.replace(' & Policy', '')}</a>`).join('')}</nav>
-    <p class="mono"><a href="mailto:${ENVIRA.email}">${ENVIRA.email}</a></p>`;
-  document.body.append(sheet);
-  mast.querySelector('.menu-btn').onclick = () => sheet.classList.add('open');
-  sheet.querySelector('button').onclick = () => sheet.classList.remove('open');
+  /* header */
+  const hdr = document.createElement('header');
+  hdr.className = 'hdr';
+  hdr.innerHTML = `<div class="wrap">${logo()}<div class="hdr-right"><a class="hdr-link" href="join.html">Join Us</a><button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button></div></div>`;
+  document.body.prepend(hdr);
+  const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 60);
+  addEventListener('scroll', onScroll); onScroll();
 
-  /* figures: <figure data-photo="key"> gets the image + an auto-numbered caption with credit */
-  let n = 0;
-  document.querySelectorAll('figure[data-photo]').forEach(fig => {
-    const k = fig.dataset.photo, p = PHOTOS[k];
-    if (!p) return;
-    let box = fig.querySelector('.img');
-    if (!box) { box = document.createElement('div'); box.className = 'img'; fig.prepend(box); }
-    const img = new Image();
-    img.alt = p.cap + ', ' + p.place; img.className = 'loading'; img.decoding = 'async';
-    if (!fig.hasAttribute('data-eager')) img.loading = 'lazy';
-    img.onload = () => img.classList.remove('loading');
-    img.onerror = () => fig.classList.add('nophoto');
-    img.src = src(k, fig.dataset.w || 2000);
-    box.append(img);
-    if (!fig.hasAttribute('data-nocap')) {
-      n++;
-      const cap = document.createElement('figcaption');
-      cap.className = 'mono';
-      cap.innerHTML = `<b>Fig. ${String(n).padStart(2, '0')}</b><span>${p.cap} — ${p.place}. Photo: <a href="${pageOf(k)}" target="_blank" rel="noopener">${p.by}</a>, ${p.lic}.</span>`;
-      fig.append(cap);
-    }
-  });
-
-  /* project index: a small photo follows the cursor on hover (desktop) */
-  const peek = document.createElement('div'); peek.className = 'peek'; peek.innerHTML = '<img alt="">';
-  document.body.append(peek);
-  document.querySelectorAll('[data-peek]').forEach(row => {
-    row.addEventListener('mouseenter', () => { peek.firstChild.src = src(row.dataset.peek, 600); peek.classList.add('on'); });
-    row.addEventListener('mouseleave', () => peek.classList.remove('on'));
-    row.addEventListener('mousemove', e => { peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; });
-  });
+  /* full-screen menu */
+  const menu = document.createElement('div');
+  menu.className = 'menu';
+  menu.innerHTML = `<button class="close" aria-label="Close menu">×</button>
+    <nav>${links.map(([h, t, k], i) => `<a href="${h}" class="${k === page ? 'active' : ''}"><small>0${i + 1}</small>${t}</a>`).join('')}</nav>
+    <aside>
+      <div><h4>Contact</h4><a href="mailto:${ENVIRA.email}">${ENVIRA.email}</a><a href="mailto:${ENVIRA.partnershipsEmail}">${ENVIRA.partnershipsEmail}</a></div>
+      <div><h4>Where we work</h4>Kolkata &amp; rural West Bengal<br>Local communities in the United States</div>
+      <div><h4>Get involved</h4><a href="${apply}">Apply as an Ambassador →</a></div>
+    </aside>`;
+  document.body.append(menu);
+  const toggle = open => { menu.classList.toggle('open', open); document.body.style.overflow = open ? 'hidden' : ''; };
+  hdr.querySelector('.burger').onclick = () => toggle(true);
+  menu.querySelector('.close').onclick = () => toggle(false);
+  addEventListener('keydown', e => e.key === 'Escape' && toggle(false));
 
   /* footer */
-  const used = [...new Set([...document.querySelectorAll('[data-photo],[data-peek],[data-frames]')].flatMap(e => (e.dataset.photo || e.dataset.peek || e.dataset.frames).split(',')))].filter(k => PHOTOS[k] && !isLocal(PHOTOS[k].file));
-  const foot = document.createElement('footer');
-  foot.className = 'foot';
-  foot.innerHTML = `<div class="big">Envira</div>
-    <div class="cols">
-      <div><h4>Mission</h4><p style="max-width:34ch">Driving Global Sustainability, One Solution at a Time. Climate research, policy tools and classrooms, from rural West Bengal to our own town halls.</p></div>
-      <div><h4>Sections</h4><ul><li><a href="index.html">Home</a></li>${nav.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></div>
-      <div><h4>Live tools</h4><ul>
+  const icon = {
+    linkedin: '<svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.6 8.65 21 11.3 21 14.7V21h-4v-5.6c0-1.34-.02-3.06-1.86-3.06-1.87 0-2.15 1.46-2.15 2.96V21H9z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.07 3.25.15 4.77 1.7 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.22-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.13 15.6 2.12 15.2 2.12 12s.01-3.58.07-4.85C2.34 3.93 3.86 2.38 7.11 2.23 8.38 2.2 8.76 2.2 12 2.2zm0 4.86a4.94 4.94 0 100 9.88 4.94 4.94 0 000-9.88zm0 8.15a3.2 3.2 0 110-6.42 3.2 3.2 0 010 6.42zm5.13-9.5a1.15 1.15 0 100 2.3 1.15 1.15 0 000-2.3z"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>',
+    github: '<svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.26.8-.58v-2.03c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .5z"/></svg>',
+    mail: '<svg viewBox="0 0 24 24"><path d="M2 5h20v14H2zm2 2v.5l8 5 8-5V7zm16 10V9.85l-8 5-8-5V17z"/></svg>'
+  };
+  const social = ['linkedin', 'instagram', 'youtube', 'github']
+    .map(k => `<a href="${ENVIRA[k] || '#'}" ${ENVIRA[k] ? 'target="_blank" rel="noopener"' : ''} aria-label="${k}">${icon[k]}</a>`).join('');
+  const ftr = document.createElement('footer');
+  ftr.className = 'ftr';
+  ftr.innerHTML = `<div class="wrap">
+    <div class="ftr-grid">
+      <div>${logo()}<p>Driving Global Sustainability, One Solution at a Time. Climate research, policy tools and education, from rural West Bengal to your local town hall.</p>
+        <div class="socials">${social}<a href="mailto:${ENVIRA.email}" aria-label="email">${icon.mail}</a></div></div>
+      <div><h4>Explore</h4><ul>${links.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></div>
+      <div><h4>Live Tools</h4><ul>
         <li><a href="https://carbon-arbitrage.streamlit.app/" target="_blank" rel="noopener">Carbon Arbitrage</a></li>
         <li><a href="https://decarbonization-policy-final.streamlit.app/" target="_blank" rel="noopener">Decarbonization Policy</a></li>
         <li><a href="https://arunlandfillmethanefinal.streamlit.app/" target="_blank" rel="noopener">Landfill Methane</a></li>
         <li><a href="https://us-county-hiddenchampions-saf-pilot-v1.streamlit.app/" target="_blank" rel="noopener">Climate Tech Networks</a></li>
-        <li><a href="https://drive.google.com/file/d/1mZivHKf5g9Bf-9r10wjyDVkcw150IDR6/view" target="_blank" rel="noopener">Climate Finance paper</a></li></ul></div>
+        <li><a href="https://drive.google.com/file/d/1mZivHKf5g9Bf-9r10wjyDVkcw150IDR6/view" target="_blank" rel="noopener">Climate Finance Paper</a></li>
+      </ul></div>
       <div><h4>Contact</h4><ul>
         <li><a href="mailto:${ENVIRA.email}">${ENVIRA.email}</a></li>
         <li><a href="mailto:${ENVIRA.partnershipsEmail}">${ENVIRA.partnershipsEmail}</a></li>
         <li><a href="${apply}">Apply as an Ambassador</a></li>
-        ${['linkedin', 'instagram', 'youtube', 'github'].filter(k => ENVIRA[k]).map(k => `<li><a href="${ENVIRA[k]}" target="_blank" rel="noopener">${k[0].toUpperCase() + k.slice(1)}</a></li>`).join('')}</ul></div>
+        ${ENVIRA.linkedin ? `<li><a href="${ENVIRA.linkedin}" target="_blank" rel="noopener">LinkedIn</a></li>` : ''}
+        ${ENVIRA.instagram ? `<li><a href="${ENVIRA.instagram}" target="_blank" rel="noopener">Instagram</a></li>` : ''}
+      </ul></div>
     </div>
-    <div class="credits">Photographs on this page, via Wikimedia Commons: ${used.map(k => `<a href="${pageOf(k)}" target="_blank" rel="noopener">${PHOTOS[k].cap}</a> (${PHOTOS[k].by}, ${PHOTOS[k].lic})`).join(' · ')}</div>
-    <div class="bottom mono"><span>© ${new Date().getFullYear()} Envira</span><span>Kolkata · New York</span></div>`;
-  document.body.append(foot);
+    <div class="ftr-bottom"><span>© ${new Date().getFullYear()} Envira. All rights reserved.</span><span>Kolkata · West Bengal · New York</span></div>
+    <p class="credits">Landscape photos via Wikimedia Commons: ${Object.values(PHOTOS).map(p => `<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(p.file)}" target="_blank" rel="noopener">${p.what} (${p.credit})</a>`).join(' · ')}</p>
+  </div>`;
+  document.body.append(ftr);
 
   document.querySelectorAll('[data-apply]').forEach(a => a.href = apply);
   document.querySelectorAll('[data-email]').forEach(a => a.href = 'mailto:' + ENVIRA.email);
 
-  /* quiet reveals + meters */
+  /* photo slots: your local file first, then a Commons photo (data-commons), then a labeled placeholder */
+  document.querySelectorAll('.photo img').forEach(img => {
+    const slot = img.closest('.photo');
+    const ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.innerHTML = `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></svg><b>${img.alt || 'Add photo'}</b><code>${img.getAttribute('src')}</code>`;
+    slot.append(ph);
+    const miss = () => {
+      const k = img.dataset.commons;
+      if (k && !img.dataset.tried) { img.dataset.tried = 1; img.src = photoURL(k); const c = document.createElement('span'); c.className = 'credit-tag'; c.textContent = PHOTOS[k].what + ' · ' + PHOTOS[k].credit; slot.append(c); return; }
+      slot.classList.add('missing'); slot.querySelector('.credit-tag')?.remove();
+    };
+    if (img.complete && img.naturalWidth === 0) miss();
+    img.addEventListener('error', miss);
+  });
+
+  /* monochrome / full-bleed background photos */
+  document.querySelectorAll('[data-bg]').forEach(el => {
+    const url = photoURL(el.dataset.bg), probe = new Image();
+    probe.onload = () => { el.style.backgroundImage = `url("${url}")`; el.classList.add('bg-loaded'); };
+    probe.src = url;
+  });
+
+  /* circular slideshows: <div class="orb" data-orb="paddyKolkata,sundarbanVillage"> */
+  document.querySelectorAll('.orb[data-orb]').forEach(orb => {
+    orb.insertAdjacentHTML('beforeend', '<div class="orb-mark"><img src="images/logo-dark-mark.png" alt=""></div><div class="orb-cap"></div>');
+    const keys = orb.dataset.orb.split(','), slides = [], cap = orb.querySelector('.orb-cap');
+    keys.forEach(k => {
+      const s = document.createElement('div'); s.className = 'slide'; s.dataset.k = k;
+      const probe = new Image();
+      probe.onload = () => { s.style.backgroundImage = `url("${photoURL(k)}")`; slides.push(s); orb.prepend(s); orb.classList.add('has-photo'); if (slides.length === 1) show(0); };
+      probe.src = photoURL(k);
+    });
+    let i = 0;
+    function show(n) { slides.forEach((s, j) => s.classList.toggle('on', j === n)); cap.textContent = PHOTOS[slides[n].dataset.k].what; }
+    setInterval(() => { if (slides.length > 1) { i = (i + 1) % slides.length; show(i); } }, 6000);
+  });
+
+  /* scroll reveal, bar fills, counters */
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
-    e.target.classList.add('in');
-    e.target.querySelectorAll('.meter i[data-w]').forEach(m => m.style.width = m.dataset.w);
-    io.unobserve(e.target);
-  }), { threshold: .12 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
-
-  /* home: the descent (orbit -> fields -> village -> people), or a YouTube film */
-  const d = document.querySelector('.descent');
-  if (d) {
-    if (ENVIRA.introYouTubeId) {
-      const id = ENVIRA.introYouTubeId;
-      d.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" title="Envira film"></iframe>`;
-    } else {
-      const keys = d.dataset.frames.split(','), labels = d.dataset.labels.split('|');
-      d.innerHTML = keys.map(k => `<div class="frame"><img src="${src(k, 1800)}" alt="${PHOTOS[k].cap}"></div>`).join('') +
-        `<div class="ticks">${keys.map(() => '<i></i>').join('')}</div><div class="hud"><div><div class="mono" id="dPlace"></div><div class="alt" id="dAlt"></div></div><div class="mono" id="dBy" style="text-align:right;max-width:40%"></div></div>`;
-      const frames = [...d.querySelectorAll('.frame')], ticks = [...d.querySelectorAll('.ticks i')];
-      let i = 0;
-      const show = () => {
-        frames.forEach((f, j) => f.classList.toggle('on', j === i));
-        ticks.forEach((t, j) => t.classList.toggle('on', j === i));
-        const p = PHOTOS[keys[i]];
-        d.querySelector('#dAlt').textContent = labels[i];
-        d.querySelector('#dPlace').textContent = p.place;
-        d.querySelector('#dBy').textContent = 'Photo: ' + p.by;
-        i = (i + 1) % frames.length;
-      };
-      show(); setInterval(show, 6500);
-    }
+    const el = e.target;
+    el.classList.add('in');
+    el.querySelectorAll('.bar-fill[data-w]').forEach(b => b.style.width = b.dataset.w);
+    el.querySelectorAll('[data-count]').forEach(countUp);
+    io.unobserve(el);
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  function countUp(el) {
+    const end = parseFloat(el.dataset.count), dec = (el.dataset.count.split('.')[1] || '').length, t0 = performance.now();
+    (function tick(t) { const p = Math.min(1, (t - t0) / 1800); el.firstChild.textContent = (end * (1 - Math.pow(1 - p, 3))).toFixed(dec); if (p < 1) requestAnimationFrame(tick); })(t0);
   }
 })();
