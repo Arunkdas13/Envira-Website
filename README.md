@@ -1,37 +1,30 @@
-# Envira website
+# Envira website: "Field Report" design
 
-Static site for GitHub Pages. No build step: upload everything in this folder to the root of your branch.
+Static site for GitHub Pages with no build step. Upload everything in this folder to the root of your branch.
 
 ## Pages
-- `index.html`: home, with the animated drone-dive intro
-- `research.html`: Research & Policy (Local Climate Action Plans, projects, collaborators)
-- `education.html`: Education (West Bengal schools, NEET/JEE context, field-lab program)
+- `index.html`: home. The opening is a real-photo descent (satellite → paddies → village → people)
+- `research.html`: Research & Policy (tracks, Local Climate Action Plans, project index, collaborators)
+- `education.html`: Education (NEET/JEE figures, the field lab, partner schools)
 - `join.html`: Ambassador application
-- `about.html` and `projects.html` only redirect, so old links keep working
+- `about.html` and `projects.html` redirect so old links keep working
 
-## Edit once, update everywhere: `site.js`
-The top of `site.js` holds the settings: emails, LinkedIn/Instagram/YouTube/GitHub links,
-an application form link, and **`introYouTubeId`**.
-The navbar and footer (with all contact links) are built from it on every page.
+## Design system
+- Type: Instrument Serif (headlines), Newsreader (text), IBM Plex Mono (captions, labels). Loaded from Google Fonts.
+- Colour: paper `#efe9dd`, ink `#1a1814`, one accent, clay red `#b2462a`.
+- Every photo is a numbered figure with a caption and credit, like a printed field report.
 
-### Using a YouTube video for the intro
-1. Upload your drone footage to YouTube (Unlisted is fine).
-2. Copy the ID from the URL: `https://www.youtube.com/watch?v=AbC123xYz` → `AbC123xYz`
-3. In `site.js` set `introYouTubeId: 'AbC123xYz'`.
-The video plays muted, on loop, full-screen behind the headline. Leave it `''` to keep the animation.
+## Settings: top of `site.js`
+Emails, social links, the ambassador application link, and `introYouTubeId`.
+Set `introYouTubeId` to play your own drone footage in place of the photo descent on the home page.
 
-## Adding real photos
-Drop JPGs with these exact names into `images/schools/`. Until a file exists, the site shows a labeled placeholder.
-| File | Where it shows |
-|---|---|
-| `images/schools/village.jpg` | Wide banner photo of the village/region (landscape) |
-| `images/schools/school-1.jpg` | Partner school 1 |
-| `images/schools/school-2.jpg` | Partner school 2 |
-| `images/schools/students.jpg` | Students at work |
+## Photos
+22 photographs from Wikimedia Commons, each CC-licensed or public domain. They load straight from Commons
+and are credited (author + license + link) in their caption and in the footer of every page that uses them.
+The list is `PHOTOS` in `site.js`. To swap in your own photo, put it in `images/` and change that entry's
+`file` to e.g. `images/schools/school-1.jpg` (and update `by`, `cap`, `place`).
+Note: a few water scenes (`otters`) are from the Bangladesh side of the Sundarbans and are captioned that way.
 
-Then edit the captions ("Partner School 1 — Village, District") in `education.html`.
-Get permission from the school and parents before posting photos of students.
-
-## Things to update before sharing
-- Replace `contact@envira.org` / `partnerships@envira.org` in `site.js` if those inboxes don't exist yet.
-- Add social links in `site.js` (blank links are hidden from the footer list).
+## Partner schools
+`education.html` has an empty slot for the first partner school's photo. Name schools only after they've agreed,
+and get permission from the school and parents before posting photos of students.

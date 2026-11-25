@@ -3,131 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Education | Envira</title>
+<title>Education: Envira</title>
 <link rel="icon" href="images/logo-light-mark.png">
 <link rel="stylesheet" href="styles.css">
-<style>
-  .hero-edu .sun { position: absolute; right: 8%; top: 18%; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, #fffbeb 0%, #fde047 35%, rgba(251,146,60,0) 70%); animation: drift 10s ease-in-out infinite; }
-  .hero-edu .hills { position: absolute; left: 0; right: 0; bottom: -2px; width: 100%; height: 160px; }
-  .big-photo { aspect-ratio: 16/7; }
-</style>
 </head>
-<body data-page="education" data-darkhero="true">
+<body data-page="education">
 
-<section class="page-hero hero-edu">
-  <div class="sun"></div>
-  <svg class="hills" viewBox="0 0 1440 160" preserveAspectRatio="none"><path d="M0 90 Q 240 30 480 80 T 960 70 T 1440 60 V160 H0Z" fill="#064e3b" opacity=".55"/><path d="M0 120 Q 300 80 620 115 T 1440 100 V160 H0Z" fill="#fff"/></svg>
-  <div class="wrap">
-    <span class="label on-dark" style="background:rgba(255,255,255,.18);color:#fff">Sector 02 · Education · Rural West Bengal</span>
-    <h1 class="h-xl">Rigor meets <span style="color:#fde68a">curiosity.</span></h1>
-    <p class="lead">India's students are some of the hardest-working in the world. We partner with schools in rural West Bengal to keep that rigor — and add what the exam system rarely makes room for: asking your own question and doing real research about the place you live.</p>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:34px">
-      <a class="btn btn-green" href="#schools">Our partner schools <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="#model">How the program works</a>
-    </div>
+<!-- OPENER: portrait left, headline right -->
+<section class="grid opener splitview">
+  <div class="label mono"><span class="clay">02 / Education</span><span>Rural West Bengal</span></div>
+  <figure class="portrait" data-photo="girls" data-eager></figure>
+  <div class="h"><h1>Rigor, then <em>curiosity.</em></h1></div>
+  <div class="side">
+    <p class="lead">India's students are some of the hardest-working in the world. We partner with schools in rural West Bengal to keep that rigor and add what the exam system rarely makes room for: asking your own question, and doing real research about the place you live.</p>
+    <p class="mono" style="margin-top:26px"><a href="#lab">The field lab ↓</a> &nbsp; <a href="#schools">Partner schools ↓</a></p>
   </div>
 </section>
 
-<!-- THE EXAM FUNNEL -->
-<section class="pad">
-  <div class="wrap split">
-    <div class="reveal">
-      <span class="label heat">The reality</span>
-      <h2 class="h-lg">Two exams. Nearly 38 lakh registrations.</h2>
-      <p class="lead">In 2025, about 22.8 lakh students registered for NEET (medicine) and about 15.4 lakh for JEE Main (engineering). For millions of teenagers, school becomes preparation for a single test day.</p>
-      <p class="lead" style="margin-top:18px">These students aren't short on talent or discipline. What they rarely get is room to explore: to design an experiment, follow a hunch, be wrong, and try again.</p>
+<!-- THE NUMBERS -->
+<section class="grid pad-y">
+  <div class="rv" style="grid-column:1/5">
+    <div class="mono clay" style="margin-bottom:14px">I. The Exam</div>
+    <h2 class="h2">Two exams. Nearly <em>38 lakh</em> registrations.</h2>
+    <p>For millions of teenagers, school becomes preparation for a single test day. These students are not short on talent or discipline. What they rarely get is room to design an experiment, follow a hunch, be wrong, and try again.</p>
+  </div>
+  <div class="rv" style="grid-column:6/13">
+    <div class="figs">
+      <div><div class="n">22.76<small>lakh</small></div><div class="mono">Registered for NEET-UG 2025 (medicine)</div><div class="meter"><i data-w="94.8%"></i></div></div>
+      <div><div class="n">15.39<small>lakh</small></div><div class="mono">Registered for JEE Main 2025 (engineering)</div><div class="meter"><i data-w="64.2%"></i></div></div>
+      <div><div class="n">22.09<small>lakh</small></div><div class="mono">Sat the NEET-UG exam</div><div class="meter"><i data-w="92%"></i></div></div>
+      <div><div class="n">12.36<small>lakh</small></div><div class="mono">Qualified in NEET-UG</div><div class="meter"><i class="clay" data-w="51.5%"></i></div></div>
     </div>
-    <div class="card reveal d2" style="padding:40px">
-      <h3 class="h-md" style="margin-bottom:24px">2025 national entrance exams</h3>
-      <div class="bars">
-        <div class="bar-row"><span class="name">NEET-UG registered</span><div class="bar-track"><div class="bar-fill" data-w="94.8%"></div></div><span class="val">22.76 lakh</span></div>
-        <div class="bar-row"><span class="name">NEET-UG appeared</span><div class="bar-track"><div class="bar-fill" data-w="92%"></div></div><span class="val">22.09 lakh</span></div>
-        <div class="bar-row"><span class="name">NEET-UG qualified</span><div class="bar-track"><div class="bar-fill" data-w="51.5%"></div></div><span class="val">12.36 lakh</span></div>
-        <div class="bar-row"><span class="name">JEE Main registered</span><div class="bar-track"><div class="bar-fill" data-w="64.2%"></div></div><span class="val">15.39 lakh</span></div>
-      </div>
-      <p class="source">1 lakh = 100,000. Sources: National Testing Agency data as reported by <a href="https://news.careers360.com/neet-result-2025-12-36-lakh-qualify-for-mbbs-bds-admission-up-performs-best-maharashtra-kota-bihar-tougher-lower-cut-off-link/amp" target="_blank" rel="noopener">Careers360</a> (NEET) and <a href="https://www.latestly.com/agency-news/india-news-24-students-score-100-percentile-as-nta-declares-jee-main-2025-results-6793035.html" target="_blank" rel="noopener">LatestLY/IANS</a> (JEE Main, unique candidates across both sessions).</p>
-    </div>
+    <p class="mono" style="margin-top:18px;color:var(--mute);text-transform:none;letter-spacing:0">1 lakh = 100,000. National Testing Agency figures as reported by <a href="https://news.careers360.com/neet-result-2025-12-36-lakh-qualify-for-mbbs-bds-admission-up-performs-best-maharashtra-kota-bihar-tougher-lower-cut-off-link/amp" target="_blank" rel="noopener">Careers360</a> (NEET) and <a href="https://www.latestly.com/agency-news/india-news-24-students-score-100-percentile-as-nta-declares-jee-main-2025-results-6793035.html" target="_blank" rel="noopener">LatestLY/IANS</a> (JEE Main, unique candidates).</p>
   </div>
 </section>
 
-<!-- RIGOR + CREATIVITY -->
-<section class="pad bg-soft">
-  <div class="wrap">
-    <div class="center reveal" style="margin-bottom:50px">
-      <span class="label">Our approach</span>
-      <h2 class="h-lg">Keep the rigor. Add the research.</h2>
-      <p class="lead">We're not trying to replace India's academic culture. We're adding the creative, open-ended research habits that students in the West often start building young.</p>
-    </div>
-    <div class="compare reveal d1">
-      <div class="side rigor">
-        <h4>What students already have</h4>
-        <ul><li>Strong math and science foundations</li><li>Discipline and long study hours</li><li>Speed and accuracy under pressure</li><li>Respect for getting the answer right</li></ul>
-      </div>
-      <div class="plus">+</div>
-      <div class="side create">
-        <h4>What Envira adds</h4>
-        <ul><li>Asking original questions about their own village</li><li>Collecting real data with simple tools</li><li>Design thinking, posters and presentations</li><li>Mentorship from student researchers abroad</li></ul>
-      </div>
-    </div>
+<!-- CHAPTER: full bleed -->
+<section class="chapter" style="margin-top:0">
+  <figure class="bleed" data-photo="pond" data-nocap><div class="img"></div></figure>
+  <div class="slab rv">
+    <span class="num">II.</span>
+    <div class="mono clay" style="margin-bottom:10px">Keep the rigor. Add the research.</div>
+    <h2>Why does the pond dry earlier every year?</h2>
+    <p>A good research career can start with a question like that. We are not trying to replace India's academic culture. We are adding the open-ended research habits that students in the West often start building young, aimed at the village outside the classroom window.</p>
+    <p class="mono" style="margin-top:22px;color:var(--mute)">Above: a village pond in West Bengal. Photo: Billjones94, CC BY-SA 4.0.</p>
   </div>
 </section>
 
-<!-- PROGRAM MODEL -->
-<section class="pad" id="model">
-  <div class="wrap">
-    <div class="reveal" style="margin-bottom:50px">
-      <span class="label">The program</span>
-      <h2 class="h-lg">Climate field labs, run by students</h2>
-      <p class="lead">Every project starts from something students can see outside the classroom window.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal d1"><h4>Observe</h4><p>Students track heat, rainfall, pond levels and soil in their own village using low-cost sensors and notebooks.</p></div>
-      <div class="step reveal d2"><h4>Question</h4><p>Why is the tin-roof classroom so much hotter? Why does the pond dry earlier? Students pick the question.</p></div>
-      <div class="step reveal d3"><h4>Investigate</h4><p>Basic data analysis and coding, guided by Envira mentors — rigorous methods, creative framing.</p></div>
-      <div class="step reveal d4"><h4>Share</h4><p>Students present findings to their school and community, and publish them online alongside Envira research.</p></div>
-    </div>
+<section class="grid pad-y">
+  <div class="ledger rv" style="grid-column:1/13">
+    <div><div class="mono" style="color:var(--mute);margin-bottom:6px">What students already have</div><ol><li>Strong math and science foundations</li><li>Discipline and long study hours</li><li>Speed and accuracy under pressure</li><li>Respect for getting the answer right</li></ol></div>
+    <div><div class="mono clay" style="margin-bottom:6px">What Envira adds</div><ol><li>Original questions about their own village</li><li>Real data, collected with simple tools</li><li>Design thinking, posters and presentations</li><li>Mentors among student researchers abroad</li></ol></div>
   </div>
 </section>
 
-<!-- SCHOOLS GALLERY -->
-<section class="pad bg-mint" id="schools">
-  <div class="wrap">
-    <div class="reveal" style="margin-bottom:44px">
-      <span class="label">Partner schools</span>
-      <h2 class="h-lg">The schools we're working with</h2>
-      <p class="lead">Our pilot is being built with schools in rural West Bengal.</p>
+<!-- THE FIELD LAB: uneven photo steps -->
+<section class="grid" id="lab" style="padding-bottom:clamp(80px,10vw,150px)">
+  <div style="grid-column:1/13;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:40px" class="rv">
+    <div><div class="mono clay" style="margin-bottom:12px">III. The Field Lab</div><h2 class="h2" style="margin:0">Run by <em>students.</em></h2></div>
+    <p class="small" style="max-width:40ch">Every project starts from something students can see outside the classroom window, and ends with them presenting it to their own community.</p>
+  </div>
+  <div class="steps" style="grid-column:1/13">
+    <div class="s rv"><figure data-photo="sunset" data-nocap><div class="img"></div></figure><span class="mono clay">01</span><h3>Observe</h3><p>Track heat, rainfall, pond levels and soil with low-cost sensors and notebooks.</p></div>
+    <div class="s rv"><figure data-photo="flood" data-nocap><div class="img"></div></figure><span class="mono clay">02</span><h3>Question</h3><p>Students choose the question. Why is the tin-roof room hotter? Why does the water stay?</p></div>
+    <div class="s rv"><figure data-photo="plough" data-nocap><div class="img"></div></figure><span class="mono clay">03</span><h3>Investigate</h3><p>Basic data analysis and coding, guided by Envira mentors.</p></div>
+    <div class="s rv"><figure data-photo="schoolgirls" data-nocap><div class="img"></div></figure><span class="mono clay">04</span><h3>Share</h3><p>Present to school and village, and publish alongside Envira research.</p></div>
+  </div>
+</section>
+
+<!-- SCHOOLS -->
+<section class="dark" id="schools">
+  <div class="grid pad-y">
+    <div class="rv" style="grid-column:1/6">
+      <div class="mono" style="color:#e39a85;margin-bottom:16px">IV. Partner Schools</div>
+      <h2 class="h2">Around Kolkata and the <em>Sundarbans.</em></h2>
+      <p>Our pilot is being built with schools in rural West Bengal. Partners will be named here once they have agreed, with photographs from their own classrooms.</p>
     </div>
-    <figure class="photo big-photo reveal" style="margin-bottom:28px"><img src="images/schools/village.jpg" alt="Wide photo: the village / region"></figure>
-    <div class="grid g3">
-      <div class="reveal d1"><figure class="photo"><img src="images/schools/school-1.jpg" alt="Photo: Partner school 1"></figure><div class="photo-cap"><b>Partner School 1</b><span>Village, District, West Bengal</span></div></div>
-      <div class="reveal d2"><figure class="photo"><img src="images/schools/school-2.jpg" alt="Photo: Partner school 2"></figure><div class="photo-cap"><b>Partner School 2</b><span>Village, District, West Bengal</span></div></div>
-      <div class="reveal d3"><figure class="photo"><img src="images/schools/students.jpg" alt="Photo: Students at work"></figure><div class="photo-cap"><b>Students in the field lab</b><span>Measuring, asking, building</span></div></div>
+    <div class="slots rv" style="grid-column:7/13">
+      <figure data-photo="village2"></figure>
+      <figure class="slot-empty"><div class="img mono" style="color:#b9b1a2">Partner school photograph<br>images/schools/school-1.jpg</div><figcaption class="mono"><b>Soon</b><span>First partner school, West Bengal</span></figcaption></figure>
     </div>
   </div>
 </section>
 
 <!-- TWO PLACES -->
-<section class="pad bg-navy">
-  <div class="wrap split">
-    <div class="reveal">
-      <span class="label on-dark">Global and local</span>
-      <h2 class="h-lg">Same climate question.<br>Two places.</h2>
-      <p class="lead" style="color:rgba(255,255,255,.78)">A student in West Bengal measures her school roof. A student in New York measures his. They compare data, write up the results together, and both learn something no textbook could teach.</p>
-    </div>
-    <div class="grid reveal d2" style="gap:18px">
-      <div class="tool" style="display:block;padding:26px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)"><b style="color:#fde68a">West Bengal</b><p style="color:#cbd5e1;margin-top:6px">Paddy fields, ponds, pre-monsoon heat, school rooftops.</p></div>
-      <div class="tool" style="display:block;padding:26px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)"><b style="color:#6ee7b7">Your community</b><p style="color:#cbd5e1;margin-top:6px">Town budgets, local energy choices, heat in your own neighborhood.</p></div>
-    </div>
-  </div>
+<section class="grid pad-y">
+  <p class="pull rv">A student in the Sundarbans measures her school roof. A student in Westchester measures his. <em>Same question, two places.</em></p>
+  <p class="mono rv">Paired field labs, India and the United States</p>
 </section>
 
-<section class="pad">
-  <div class="wrap">
-    <div class="cta-band reveal">
-      <div><h2>Help build the classroom of the future.</h2><p>Ambassadors mentor students, design field-lab activities and help bring new partner schools on board.</p></div>
-      <a class="btn" href="join.html">Become an Ambassador <span class="arrow">→</span></a>
-    </div>
-  </div>
+<section class="grid close" style="padding-bottom:clamp(80px,10vw,150px)">
+  <h2 class="rv">Help build the <em>classroom.</em></h2>
+  <div class="act rv"><a class="cta-link" href="join.html">Mentor as an Ambassador</a><a class="cta-link" data-email href="#">Introduce a school</a></div>
 </section>
 
 <script src="site.js"></script>
